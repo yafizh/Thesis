@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#example").DataTable({
-        sScrollY: "470",
-        bScrollCollapse: false,
+        // sScrollY: "396",
+        // bScrollCollapse: false,
     });
 });

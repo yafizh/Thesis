@@ -1,4 +1,4 @@
-<div id="sidebar" class="p-3 bg-white rounded shadow" style="min-width: 280px; min-height: 96.5vh;">
+<div id="sidebar" class="p-3 bg-white rounded shadow" style="min-width: 280px; height: 96.5vh;">
     <a href="/" class="d-flex flex-column align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
         <img src="/images/logo.png" alt="Logo" width="100" />
         <span class="fs-5 fw-semibold text-uppercase">Balai Pengkajian</span>
@@ -14,36 +14,38 @@
                 Home
             </a>
         </li>
+        @if (Session::get('user')->status === 'super-admin')
+            <li class="border-top my-3"></li>
+            <li>
+                <a href="/employees" class="nav-link {{ Request::is('employees*') ? 'active' : 'link-dark' }}">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#person-badge" />
+                    </svg>
+                    Pegawai
+                </a>
+            </li>
+            <li>
+                <a href="/users" class="nav-link {{ Request::is('users*') ? 'active' : 'link-dark' }}">
+                    <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#person" />
+                    </svg>
+                    User
+                </a>
+            </li>
+        @endif
         <li class="border-top my-3"></li>
         <li>
-            <a href="/employees" class="nav-link {{ Request::is('employees*') ? 'active' : 'link-dark' }}">
+            <a href="/proposals" class="nav-link {{ Request::is('proposals*') ? 'active' : 'link-dark' }}">
                 <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#person-badge" />
-                </svg>
-                Pegawai
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#person" />
-                </svg>
-                User
-            </a>
-        </li>
-        <li class="border-top my-3"></li>
-        <li>
-            <a href="#" class="nav-link link-dark">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#grid" />
+                    <use xlink:href="#journals" />
                 </svg>
                 Proposal
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark">
+            <a href="/reports" class="nav-link {{ Request::is('reports*') ? 'active' : 'link-dark' }}">
                 <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#people-circle" />
+                    <use xlink:href="#journals" />
                 </svg>
                 Laporan
             </a>

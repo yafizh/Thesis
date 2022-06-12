@@ -1,0 +1,13 @@
+.ts-control {
+    border-radius: 0.375rem;
+}
+
+.ts-wrapper .option .title {
+    display: block;
+}
+
+.ts-wrapper .option .url {
+    font-size: 12px;
+    display: block;
+    color: #a0a0a0;
+}
