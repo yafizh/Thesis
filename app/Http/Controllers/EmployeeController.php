@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,7 @@ class EmployeeController extends Controller
     public function index()
     {
         return view(
-            'dashboard.employee.index',
+            'dashboard.employees.index',
             ['employees' => Employee::all()]
         );
     }
@@ -28,7 +29,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('dashboard.employee.create');
+        return view('dashboard.employees.create');
     }
 
     /**
@@ -51,7 +52,8 @@ class EmployeeController extends Controller
         if ($request->file('photo'))
             $validated['photo'] = $request->file('photo')->store('employee-photo');
 
-        Employee::create($validated);
+        $id = (Employee::create($validated))->id;
+        User::create(['employee_id' => $id, 'password' => bcrypt($request->get('nip'))]);
 
         return redirect('/employees')->with('success', 'Data karyawan berhasil ditambahkan!');
     }
@@ -64,7 +66,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return view('dashboard.employee.show', ['employee' => $employee]);
+        return view('dashboard.employees.show', ['employee' => $employee]);
     }
 
     /**
@@ -75,7 +77,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        return view('dashboard.employee.edit', ['employee' => $employee]);
+        return view('dashboard.employees.edit', ['employee' => $employee]);
     }
 
     /**
@@ -120,6 +122,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         if ($employee->photo) Storage::delete($employee->photo);
+        User::where('employee_id', $employee->id)->delete();
         Employee::destroy($employee->id);
         return redirect('/employees')->with('success', 'Data karyawan berhasil dihapus!');
     }
