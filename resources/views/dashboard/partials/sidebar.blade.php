@@ -10,12 +10,12 @@
     </div>
     <ul class="app-menu">
         <li>
-            <a class="app-menu__item active" href="dashboard.html">
+            <a class="app-menu__item  {{ Request::is('/') ? 'active' : '' }}" href="dashboard.html">
                 <i class="app-menu__icon fa fa-dashboard"></i>
                 <span class="app-menu__label">Dashboard</span>
             </a>
         </li>
-        <li class="treeview">
+        <li class="treeview  {{ (Request::is('employees*') || Request::is('users*')) ? 'is-expanded' : 'link-dark' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview">
                 <i class="app-menu__icon fa fa-laptop"></i>
                 <span class="app-menu__label">Data Master</span>
@@ -23,13 +23,13 @@
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a class="treeview-item" href="/employees">
+                    <a class="treeview-item  {{ Request::is('employees*') ? 'active' : '' }}" href="/employees">
                         <i class="icon fa fa-circle-o"></i>
                         Data Pegawai
                     </a>
                 </li>
                 <li>
-                    <a class="treeview-item" href="/users">
+                    <a class="treeview-item {{ Request::is('users*') ? 'active' : '' }}" href="/users">
                         <i class="icon fa fa-circle-o"></i>
                         Data Pengguna
                     </a>
