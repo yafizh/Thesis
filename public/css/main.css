@@ -25,7 +25,7 @@
   --white: #FFF;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --primary: #85271F;
+  --primary: #4DAF50;
   --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;
@@ -162,7 +162,7 @@ sup {
 }
 
 a {
-  color: #85271F;
+  color: #4DAF50;
   text-decoration: none;
   background-color: transparent;
 }
@@ -2046,7 +2046,7 @@ pre code {
 .form-control:focus {
   color: #495057;
   background-color: #FFF;
-  border-color: #85271F;
+  border-color: #4DAF50;
   outline: 0;
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -2619,14 +2619,14 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .btn-primary:hover {
   color: #FFF;
   background-color: #007065;
-  border-color: #00635a;
+  border-color: #218821;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2636,14 +2636,14 @@ fieldset:disabled a.btn {
 
 .btn-primary.disabled, .btn-primary:disabled {
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #218821;
   border-color: #00564e;
 }
 
@@ -2906,14 +2906,14 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary {
-  color: #85271F;
-  border-color: #85271F;
+  color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .btn-outline-primary:hover {
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .btn-outline-primary:focus, .btn-outline-primary.focus {
@@ -2922,15 +2922,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary.disabled, .btn-outline-primary:disabled {
-  color: #85271F;
+  color: #4DAF50;
   background-color: transparent;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-primary.dropdown-toggle {
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
@@ -3179,7 +3179,7 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #85271F;
+  color: #4DAF50;
   text-decoration: none;
 }
 
@@ -3497,7 +3497,7 @@ input[type="button"].btn-block {
 .dropdown-item.active, .dropdown-item:active {
   color: #FFF;
   text-decoration: none;
-  background-color: #85271F;
+  background-color: #4DAF50;
 }
 
 .dropdown-item.disabled, .dropdown-item:disabled {
@@ -3885,8 +3885,8 @@ input[type="button"].btn-block {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #FFF;
-  border-color: #85271F;
-  background-color: #85271F;
+  border-color: #4DAF50;
+  background-color: #4DAF50;
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
@@ -3895,7 +3895,7 @@ input[type="button"].btn-block {
 }
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
-  border-color: #85271F;
+  border-color: #4DAF50;
 }
 
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
@@ -3951,8 +3951,8 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
-  border-color: #85271F;
-  background-color: #85271F;
+  border-color: #4DAF50;
+  background-color: #4DAF50;
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
@@ -4043,7 +4043,7 @@ input[type="button"].btn-block {
 }
 
 .custom-select:focus {
-  border-color: #85271F;
+  border-color: #4DAF50;
   outline: 0;
   -webkit-box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.25);
           box-shadow: 0 0 0 0 rgba(0, 150, 136, 0.25);
@@ -4103,7 +4103,7 @@ input[type="button"].btn-block {
 }
 
 .custom-file-input:focus ~ .custom-file-label {
-  border-color: #85271F;
+  border-color: #4DAF50;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -4188,7 +4188,7 @@ input[type="button"].btn-block {
   width: 1rem;
   height: 1rem;
   margin-top: -0.25rem;
-  background-color: #85271F;
+  background-color: #4DAF50;
   border: 0;
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -4225,7 +4225,7 @@ input[type="button"].btn-block {
 .custom-range::-moz-range-thumb {
   width: 1rem;
   height: 1rem;
-  background-color: #85271F;
+  background-color: #4DAF50;
   border: 0;
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -4265,7 +4265,7 @@ input[type="button"].btn-block {
   margin-top: 0;
   margin-right: 0;
   margin-left: 0;
-  background-color: #85271F;
+  background-color: #4DAF50;
   border: 0;
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -4419,7 +4419,7 @@ input[type="button"].btn-block {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #FFF;
-  background-color: #85271F;
+  background-color: #4DAF50;
 }
 
 .nav-fill .nav-item {
@@ -5212,7 +5212,7 @@ input[type="button"].btn-block {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #85271F;
+  color: #4DAF50;
   background-color: #FFF;
   border: 1px solid #dee2e6;
 }
@@ -5246,8 +5246,8 @@ input[type="button"].btn-block {
 .page-item.active .page-link {
   z-index: 1;
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .page-item.disabled .page-link {
@@ -5336,12 +5336,12 @@ a.badge:hover, a.badge:focus {
 
 .badge-primary {
   color: #FFF;
-  background-color: #85271F;
+  background-color: #4DAF50;
 }
 
 a.badge-primary:hover, a.badge-primary:focus {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #218821;
 }
 
 a.badge-primary:focus, a.badge-primary.focus {
@@ -5664,7 +5664,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   color: #FFF;
   text-align: center;
   white-space: nowrap;
-  background-color: #85271F;
+  background-color: #4DAF50;
   -webkit-transition: width 0.6s ease;
   -o-transition: width 0.6s ease;
   transition: width 0.6s ease;
@@ -5770,8 +5770,8 @@ a.badge-dark:focus, a.badge-dark.focus {
 .list-group-item.active {
   z-index: 2;
   color: #FFF;
-  background-color: #85271F;
-  border-color: #85271F;
+  background-color: #4DAF50;
+  border-color: #4DAF50;
 }
 
 .list-group-horizontal {
@@ -6966,13 +6966,13 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #85271F !important;
+  background-color: #4DAF50 !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
-  background-color: #00635a !important;
+  background-color: #218821 !important;
 }
 
 .bg-secondary {
@@ -7094,7 +7094,7 @@ button.bg-dark:focus {
 }
 
 .border-primary {
-  border-color: #85271F !important;
+  border-color: #4DAF50 !important;
 }
 
 .border-secondary {
@@ -10424,7 +10424,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #85271F !important;
+  color: #4DAF50 !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
@@ -11432,15 +11432,15 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .datepicker table tr td.active.focus,
 .datepicker table tr td.active.highlighted.focus {
   color: #ffffff;
-  background-color: #85271F;
+  background-color: #4DAF50;
   border-color: #193c5a;
 }
 
 .datepicker table tr td.active:hover,
 .datepicker table tr td.active.highlighted:hover {
   color: #ffffff;
-  background-color: #85271F;
-  border-color: #77231b;
+  background-color: #4DAF50;
+  border-color: #5EB75F;
 }
 
 .datepicker table tr td.active:active,
@@ -11450,8 +11450,8 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td.active,
 .open > .dropdown-toggle.datepicker table tr td.active.highlighted {
   color: #ffffff;
-  background-color: #85271F;
-  border-color: #77231b;
+  background-color: #4DAF50;
+  border-color: #5EB75F;
 }
 
 .datepicker table tr td.active:active:hover,
@@ -11473,7 +11473,7 @@ fieldset[disabled] .datepicker table tr td.selected.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td.active.focus,
 .open > .dropdown-toggle.datepicker table tr td.active.highlighted.focus {
   color: #ffffff;
-  background-color: #77231b;
+  background-color: #5EB75F;
   border-color: #193c5a;
 }
 
@@ -11549,7 +11549,7 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .datepicker table tr td span.active.disabled.focus,
 .datepicker table tr td span.active.disabled:hover.focus {
   color: #ffffff;
-  background-color: #85271F;
+  background-color: #4DAF50;
   border-color: #193c5a;
 }
 
@@ -11558,8 +11558,8 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .datepicker table tr td span.active.disabled:hover,
 .datepicker table tr td span.active.disabled:hover:hover {
   color: #ffffff;
-  background-color: #85271F;
-  border-color: #77231b;
+  background-color: #4DAF50;
+  border-color: #5EB75F;
 }
 
 .datepicker table tr td span.active:active,
@@ -11575,8 +11575,8 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled,
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
   color: #ffffff;
-  background-color: #85271F;
-  border-color: #77231b;
+  background-color: #4DAF50;
+  border-color: #5EB75F;
 }
 
 .datepicker table tr td span.active:active:hover,
@@ -11616,7 +11616,7 @@ fieldset[disabled] .datepicker table tr td.active.highlighted.focus {
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled.focus,
 .open > .dropdown-toggle.datepicker table tr td span.active.disabled:hover.focus {
   color: #ffffff;
-  background-color: #77231b;
+  background-color: #5EB75F;
   border-color: #193c5a;
 }
 
@@ -11959,7 +11959,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert input:focus {
-  border-color: #85271F;
+  border-color: #4DAF50;
   outline: none;
 }
 
@@ -11983,7 +11983,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert button {
-  background-color: #85271F !important;
+  background-color: #4DAF50 !important;
   color: white;
   border: none;
   -webkit-box-shadow: none;
@@ -12007,7 +12007,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert button:active {
-  background-color: #00635a;
+  background-color: #218821;
 }
 
 .sweet-alert button.cancel {
@@ -13096,7 +13096,7 @@ body.stop-scrolling {
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-  border-color: #85271F;
+  border-color: #4DAF50;
   outline: 0;
 }
 
@@ -13183,7 +13183,7 @@ body.stop-scrolling {
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #85271F;
+  background-color: #4DAF50;
   color: white;
 }
 
@@ -13202,7 +13202,7 @@ body.stop-scrolling {
 }
 
 .pace .pace-progress {
-  background: #96000e;
+  background: #f8f8f8;
   position: fixed;
   z-index: 2000;
   top: 0;
@@ -13217,8 +13217,8 @@ body.stop-scrolling {
   right: 0;
   width: 100px;
   height: 100%;
-  -webkit-box-shadow: 0 0 10px #96000e, 0 0 5px #96000e;
-          box-shadow: 0 0 10px #96000e, 0 0 5px #96000e;
+  -webkit-box-shadow: 0 0 10px #f8f8f8, 0 0 5px #f8f8f8;
+          box-shadow: 0 0 10px #f8f8f8, 0 0 5px #f8f8f8;
   opacity: 1;
   -webkit-transform: rotate(3deg) translate(0px, -4px);
       -ms-transform: rotate(3deg) translate(0px, -4px);
@@ -13517,7 +13517,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 .fc-state-down,
 .fc-state-active {
-  background-color: #85271F;
+  background-color: #4DAF50;
   color: #FFF;
   background-image: none;
   -webkit-box-shadow: none;
@@ -13790,8 +13790,8 @@ temporary rendered events).
   padding: 5px;
   line-height: 1.3;
   border-radius: 3px;
-  border: 1px solid #85271F;
-  background-color: #85271F;
+  border: 1px solid #4DAF50;
+  background-color: #4DAF50;
   font-weight: normal;
   /* undo jqui's ui-widget-header bold */
   margin-bottom: 5px;
@@ -14821,12 +14821,12 @@ be a descendant of the grid when it is being dragged.
 
 ::-moz-selection {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #218821;
 }
 
 ::selection {
   color: #FFF;
-  background-color: #00635a;
+  background-color: #218821;
 }
 
 @media (min-width: 768px) {
@@ -14922,7 +14922,7 @@ be a descendant of the grid when it is being dragged.
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background-color: #85271F;
+  background-color: #4DAF50;
   z-index: 1030;
   padding-right: 15px;
 }
@@ -14959,7 +14959,7 @@ be a descendant of the grid when it is being dragged.
             flex: 0 0 auto;
     display: block;
     width: 230px;
-    background-color: #77231b;
+    background-color: #5EB75F;
   }
 }
 
@@ -14993,7 +14993,7 @@ be a descendant of the grid when it is being dragged.
 
 .app-sidebar__toggle:focus, .app-sidebar__toggle:hover {
   color: #fff;
-  background-color: #00635a;
+  background-color: #218821;
   text-decoration: none;
 }
 
@@ -15160,7 +15160,7 @@ be a descendant of the grid when it is being dragged.
   width: 230px;
   overflow: auto;
   z-index: 10;
-  background-color: #222d32;
+  background-color: #f8f8f8;
   -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
   -webkit-transition: left 0.3s ease,
@@ -15205,7 +15205,7 @@ be a descendant of the grid when it is being dragged.
           align-items: center;
   padding: 10px;
   margin-bottom: 20px;
-  color: #fff;
+  color: #000;
 }
 
 .app-sidebar__user-avatar {
@@ -15222,7 +15222,7 @@ be a descendant of the grid when it is being dragged.
 
 .app-sidebar__user-name,
 .app-sidebar__user-designation {
-  white-space: nowrap;
+  /* white-space: nowrap; */
   overflow: hidden;
   -o-text-overflow: ellipsis;
      text-overflow: ellipsis;
@@ -15251,14 +15251,15 @@ be a descendant of the grid when it is being dragged.
  background-color 0.3s ease;
   transition: border-left-color 0.3s ease,
  background-color 0.3s ease;
-  color: #fff;
+  color: #000;
 }
 
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
-  background: #0d1214;
-  border-left-color: #85271F;
+  background: #dfdfdf;
+  border-left-color: #4DAF50;
   text-decoration: none;
-  color: #fff;
+  color: #4DAF50;
+  /* Tanda */
 }
 
 .app-menu__icon {
@@ -15276,8 +15277,8 @@ be a descendant of the grid when it is being dragged.
 }
 
 .treeview.is-expanded [data-toggle='treeview'] {
-  border-left-color: #85271F;
-  background: #0d1214;
+  border-left-color: #4DAF50;
+  background: #dfdfdf;
 }
 
 .treeview.is-expanded .treeview-menu {
@@ -15296,7 +15297,7 @@ be a descendant of the grid when it is being dragged.
   -webkit-transition: max-height 0.3s ease;
   -o-transition: max-height 0.3s ease;
   transition: max-height 0.3s ease;
-  background: #2a383e;
+  background: #eeeeee;
 }
 
 .treeview-item {
@@ -15308,13 +15309,13 @@ be a descendant of the grid when it is being dragged.
           align-items: center;
   padding: 5px 5px 5px 20px;
   font-size: 1em;
-  color: #fff;
+  color: #000;
 }
 
 .treeview-item.active, .treeview-item:hover, .treeview-item:focus {
-  background: #0d1214;
+  background: #dfdfdf;
   text-decoration: none;
-  color: #fff;
+  color: #77DD77;
 }
 
 .treeview-item .icon {
@@ -15375,14 +15376,14 @@ be a descendant of the grid when it is being dragged.
     margin-left: -3px;
     line-height: 1;
     opacity: 0;
-    background: #0d1214;
+    background: #dfdfdf;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__item {
     overflow: visible;
-    background: #0d1214;
-    border-left-color: #85271F;
+    background: #dfdfdf;
+    border-left-color: #4DAF50;
     color: #fff;
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__label {
@@ -15656,7 +15657,7 @@ be a descendant of the grid when it is being dragged.
 
 .animated-checkbox input[type="checkbox"]:checked + .label-text:before {
   content: "";
-  color: #85271F;
+  color: #4DAF50;
   -webkit-animation: tick 180ms ease-in;
           animation: tick 180ms ease-in;
 }
@@ -15701,7 +15702,7 @@ be a descendant of the grid when it is being dragged.
 
 .animated-radio-button input[type="radio"]:checked + .label-text:before {
   content: "";
-  color: #85271F;
+  color: #4DAF50;
   -webkit-animation: tick 180ms ease-in;
           animation: tick 180ms ease-in;
 }
@@ -15780,7 +15781,7 @@ be a descendant of the grid when it is being dragged.
 
 .toggle input[type="checkbox"]:checked + .button-indecator:before {
   content: "";
-  color: #85271F;
+  color: #4DAF50;
   -webkit-animation: toggleBtn 0.3s ease-in-out;
           animation: toggleBtn 0.3s ease-in-out;
 }
@@ -15834,7 +15835,7 @@ be a descendant of the grid when it is being dragged.
 
 .toggle-flip input[type="checkbox"] + .flip-indecator:after {
   content: attr(data-toggle-on);
-  background-color: #85271F;
+  background-color: #4DAF50;
   color: #fff;
   -webkit-transform: rotateY(-180deg);
           transform: rotateY(-180deg);
@@ -15893,7 +15894,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .material-half-bg .cover {
-  background-color: #85271F;
+  background-color: #4DAF50;
   height: 50vh;
 }
 
@@ -15927,7 +15928,7 @@ be a descendant of the grid when it is being dragged.
 .path {
   stroke-dasharray: 1,200;
   stroke-dashoffset: 0;
-  stroke: #85271F;
+  stroke: #4DAF50;
   -webkit-animation: dash 1.5s ease-in-out infinite;
           animation: dash 1.5s ease-in-out infinite;
   stroke-linecap: round;
@@ -16066,7 +16067,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .widget-small.primary {
-  background-color: #85271F;
+  background-color: #4DAF50;
 }
 
 .widget-small.primary.coloured-icon {
@@ -16075,7 +16076,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .widget-small.primary.coloured-icon .icon {
-  background-color: #85271F;
+  background-color: #4DAF50;
   color: #fff;
 }
 
@@ -16165,7 +16166,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .messanger .messages .message.me .info {
-  background-color: #85271F;
+  background-color: #4DAF50;
   color: #FFF;
 }
 
@@ -16182,7 +16183,7 @@ be a descendant of the grid when it is being dragged.
   height: 0;
   border-style: solid;
   border-width: 0 16px 16px 0;
-  border-color: transparent #85271F transparent transparent;
+  border-color: transparent #4DAF50 transparent transparent;
   -webkit-transform: rotate(270deg);
       -ms-transform: rotate(270deg);
           transform: rotate(270deg);
@@ -16225,7 +16226,7 @@ be a descendant of the grid when it is being dragged.
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  border: 1px solid #85271F;
+  border: 1px solid #4DAF50;
   outline: none;
   padding: 5px 10px;
 }
@@ -16332,7 +16333,7 @@ be a descendant of the grid when it is being dragged.
   margin: 0 auto 8px;
   padding: 15px;
   border-radius: 50%;
-  background-color: #85271F;
+  background-color: #4DAF50;
 }
 
 .feature-icon {
@@ -16653,7 +16654,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .user .user-tabs .nav-link.active {
-  border-left-color: #85271F;
+  border-left-color: #4DAF50;
   border-bottom: 0;
 }
 

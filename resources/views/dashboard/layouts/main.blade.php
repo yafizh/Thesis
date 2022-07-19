@@ -11,6 +11,10 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css"
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    {{-- Tom Select --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.0.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.0.2/dist/js/tom-select.complete.min.js"></script>
 </head>
 
 <body class="app sidebar-mini">
@@ -34,7 +38,9 @@
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-        $('#sampleTable').DataTable();
+        $('#sampleTable').DataTable({
+            "aaSorting": []
+        });
     </script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="/js/plugins/chart.js"></script>
