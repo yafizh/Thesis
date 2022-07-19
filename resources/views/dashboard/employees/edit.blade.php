@@ -113,7 +113,7 @@
                                         color: white;
                                         display: none;
                                         /* justify-content: center;
-                                                align-items: center; */
+                                                    align-items: center; */
                                     }
 
                                     .employee-image {
@@ -246,7 +246,7 @@
                         &nbsp;&nbsp;&nbsp;
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                            Edit
+                            Simpan
                         </button>
                     </div>
                 </form>

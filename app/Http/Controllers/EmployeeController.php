@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,7 @@ class EmployeeController extends Controller
     public function index()
     {
         return view('dashboard.employees.index', [
-            'employees' => Employee::all()
+            'employees' => Employee::orderBy("name")->get()
         ]);
     }
 
@@ -71,6 +72,14 @@ class EmployeeController extends Controller
             $validatedData['file_ktp'] = $request->file('file_ktp')->store('employee-ktp');
         }
 
+        $user_id = User::create([
+            "name" => $validatedData['name'],
+            "username" => $validatedData['nip'],
+            "password" => bcrypt($validatedData['nip']),
+            "status" => "EMPLOYEE",
+        ])->id;
+
+        $validatedData['user_id'] = $user_id;
         Employee::create($validatedData);
 
         return redirect('/employees');
@@ -84,7 +93,11 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        $birth = $employee->birth;
+        $employee->birth = explode('-', $birth)[2] . '-' . explode('-', $birth)[1] . '-' . explode('-', $birth)[0];
+        return view('dashboard.employees.show', [
+            'employee' => $employee
+        ]);
     }
 
     /**
@@ -142,6 +155,10 @@ class EmployeeController extends Controller
             $validatedData['file_ktp'] = $request->file('file_ktp')->store('employee-ktp');
         }
 
+        User::where('id', $employee->user_id)->update([
+            'name' => $validatedData['name'],
+            'username' => $validatedData['nip']
+        ]);
         Employee::where('id', $employee->id)
             ->update($validatedData);
 
@@ -161,6 +178,7 @@ class EmployeeController extends Controller
         if ($employee->file_sk_pengangkatan) Storage::delete($employee->file_sk_pengangkatan);
         if ($employee->file_ijazah) Storage::delete($employee->file_ijazah);
         Employee::destroy($employee->id);
+        User::where('id', $employee->user_id)->delete();
         return redirect('/employees');
     }
 }
