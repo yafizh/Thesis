@@ -40,6 +40,14 @@ class AppServiceProvider extends ServiceProvider
             return $user->status === 'EMPLOYEE';
         });
 
+        Gate::define('internal', function (User $user) {
+            return $user->employee->status === 'INTERNAL';
+        });
+
+        Gate::define('external', function (User $user) {
+            return $user->employee->status === 'EXTERNAL';
+        });
+
         Gate::define('receptionist', function (User $user) {
             return $user->status === 'RECEPTIONIST';
         });

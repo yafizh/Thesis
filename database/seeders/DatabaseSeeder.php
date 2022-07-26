@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -43,6 +42,32 @@ class DatabaseSeeder extends Seeder
             'birth' => '1995-01-01',
             'address' => '',
             'file_image' => 'employee-image/ida.jpg',
+            'file_ijazah' => '',
+            'file_sk_pengangkatan' => '',
+            'file_ktp' => '',
+            'status' => 'INTERNAL'
+        ]);
+
+        $nip = "198609262015051007";
+        $name = "Muhammad Ali";
+        $id_user = User::create([
+            'name' => $name,
+            'username' => $nip,
+            'password' => bcrypt($nip),
+            'status' => 'EMPLOYEE'
+        ])->id;
+        Employee::create([
+            'user_id' => $id_user,
+            'nip' => $nip,
+            'name' => $name,
+            'position' => 'Penyuluh Pertanian Pertama',
+            'sex' => 0,
+            'phone_number' => '0896630803',
+            'academic_background' => 'Sarjana',
+            'start_date' => '2020-03-11',
+            'birth' => '1995-01-01',
+            'address' => '',
+            'file_image' => 'employee-image/m ali.jpg',
             'file_ijazah' => '',
             'file_sk_pengangkatan' => '',
             'file_ktp' => '',
@@ -99,6 +124,32 @@ class DatabaseSeeder extends Seeder
             'file_sk_pengangkatan' => '',
             'file_ktp' => '',
             'status' => 'INTERNAL'
+        ]);
+
+        $nip = "198609262015051331";
+        $name = "Puspita Harum Maharani, M.Sc";
+        $id_user = User::create([
+            'name' => $name,
+            'username' => $nip,
+            'password' => bcrypt($nip),
+            'status' => 'EMPLOYEE'
+        ])->id;
+        Employee::create([
+            'user_id' => $id_user,
+            'nip' => $nip,
+            'name' => $name,
+            'position' => 'Peneliti Pertama',
+            'sex' => 0,
+            'phone_number' => '0818901382',
+            'academic_background' => 'Sarjana',
+            'start_date' => '2005-05-03',
+            'birth' => '1995-01-01',
+            'address' => '',
+            'file_image' => 'employee-image/puspita.jpg',
+            'file_ijazah' => '',
+            'file_sk_pengangkatan' => '',
+            'file_ktp' => '',
+            'status' => 'EXTERNAL'
         ]);
     }
 }

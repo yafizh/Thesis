@@ -5,24 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Research extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function researches()
+    public function members()
     {
         return $this->hasMany(ResearchMember::class);
     }
 
-    public function studies()
+    public function proposal()
     {
-        return $this->hasMany(StudyMember::class);
+        return $this->belongsTo(Proposal::class);
     }
 
-    public function user()
+    public function report()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Report::class);
     }
 }
