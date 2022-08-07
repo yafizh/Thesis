@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                <form action="/users" method="POST">
+                <form action="/{{ explode('.', Route::currentRouteName())[0] }}" method="POST">
                     @csrf
                     <h3 class="tile-title">Data Pengguna</h3>
                     <div class="tile-body">
@@ -48,8 +48,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
-                        <a class="btn btn-secondary" href="/users">
+                    <div class="tile-footer d-flex justify-content-between">
+                        <a class="btn btn-secondary" href="/{{ explode('.', Route::currentRouteName())[0] }}">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>
                             Kembali
                         </a>
@@ -67,14 +67,13 @@
         let users = [];
         @foreach ($users as $user)
             users.push({
-                id: {{ $user->id }},
                 name: '{{ $user->name }}',
                 username: '{{ $user->username }}',
             });
         @endforeach
 
         const user = new TomSelect("#name", {
-            valueField: "id",
+            valueField: "name",
             searchField: "name",
             options: users,
             render: {

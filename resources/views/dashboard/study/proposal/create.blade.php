@@ -32,12 +32,47 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Judul Penelitian yang Dikaji</label>
-                                    <select class="form-control" name="research_id" id="research_id">
+                                    <select class="form-control" name="research_id" id="research_id" required>
                                         <option value="" selected disabled>Pilih Judul Penelitian</option>
                                         @foreach ($researches as $research)
                                             <option value="{{ $research->id }}">{{ $research->title }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <h6>Anggaran</h6>
+                                <div id="budged" class="row">
+                                    @foreach (old('name', []) as $index => $budged)
+                                        @if ($index + 1 != count(old('name')))
+                                            @if (!is_null(old('name')[$index]) && !is_null(old('cost')[$index]))
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Keperluan</label>
+                                                        <input type="text" name="name[]" class="form-control"
+                                                            oninput="addField()" value="{{ old('name')[$index] }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Anggaran</label>
+                                                        <input type="text" name="cost[]" class="form-control"
+                                                            oninput="addField()" value="{{ old('cost')[$index] }}">
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Keperluan</label>
+                                            <input type="text" name="name[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Anggaran</label>
+                                            <input type="text" name="cost[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Anggota Pengkajian</label>
@@ -52,21 +87,57 @@
                                 <div class="form-group">
                                     <label class="control-label">File Proposal</label>
                                     <div class="custom-file">
-                                        <input type="file" name="proposal" class="custom-file-input"
+                                        <input type="file" name="proposal"
+                                            class="custom-file-input @error('proposal') is-invalid @enderror"
                                             onchange="preview(this)" accept=".pdf" required>
                                         <label class="custom-file-label">Pilih File Proposal</label>
                                     </div>
+                                    <small class="form-text text-muted" id="emailHelp">File Proposal bertipe .pdf dan
+                                        maksimal ukuran 2MB</small>
+                                    @error('proposal')
+                                        <div class="form-control-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <script>
+                        const addField = () => {
+                            var container = document.getElementById("budged");
+                            let x = true;
+                            const input1 = document.querySelectorAll("input[name='name[]']");
+                            const input2 = document.querySelectorAll("input[name='cost[]']");
+                            const input3 = [...input1, ...input2];
+                            input3.forEach((elm) => {
+                                if (!(elm.value).trim()) x = false;
+                            });
+
+                            if (x) {
+                                container.insertAdjacentHTML("beforeend", `
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Keperluan</label>
+                                            <input type="text" name="name[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Anggaran</label>
+                                            <input type="text" name="cost[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
+                                `.trim());
+                            }
+                        }
+                    </script>
+                    <div class="tile-footer d-flex justify-content-between">
                         <a class="btn btn-secondary" href="{{ url()->previous() }}">
                             <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
                             Kembali
                         </a>
                         &nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary" type="submit"
+                            onclick="return confirm('Yakin ingin melakukan pengajuan proposal ini?')">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Submit
                         </button>
@@ -74,15 +145,6 @@
                 </form>
             </div>
         </div>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         <div class="col-md-6">
             <iframe id="preview-proposal" width="100%" height="100%" frameborder="0"></iframe>
         </div>
@@ -133,7 +195,9 @@
                 },
             },
         });
-        // research_member.setValue('{{ old('research_member') }}');
+        @foreach (old('research_member', []) as $employee)
+            research_member.addItem('{{ $employee }}');
+        @endforeach
 
         const extensionists_member = new TomSelect("#extensionists_member", {
             valueField: "id",
@@ -156,6 +220,8 @@
                 },
             },
         });
-        // extensionists_member.setValue('{{ old('extensionists_member') }}');
+        @foreach (old('extensionists_member', []) as $employee)
+            extensionists_member.addItem('{{ $employee }}');
+        @endforeach
     </script>
 @endsection

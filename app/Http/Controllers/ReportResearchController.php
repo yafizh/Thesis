@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\Report;
 use App\Models\Research;
 use App\Models\ResearchMember;
@@ -11,113 +12,87 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportResearchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (auth()->user()->status === "ADMIN" || auth()->user()->employee->status === "EXTERNAL") {
             $researches = Research::latest()->get();
-            $reports = $researches->filter(function ($research) {
+            $researches = $researches->filter(function ($research) {
                 return !is_null($research->report) && $research->report->status === "SUBMITTED";
             });
         } else {
             $researches = ResearchMember::where('employee_id', auth()->user()->employee->id)->groupBy('research_id')->get()->map(function ($research) {
                 return $research->research;
             });
-            $reports = $researches->filter(function ($research) {
+            $researches = $researches->filter(function ($research) {
                 return !is_null($research->report) && ($research->report->status === "SUBMITTED" || $research->report->status === "REJECTED");
             });
         }
 
-        $reports = $reports->map(function ($research) {
+        $reports = $researches->map(function ($research) {
             $submitted_date = new Carbon($research->report->submitted_date);
             return (object)[
                 "research_id" => $research->id,
                 "head" => $research->members->filter(function ($member) {
                     return $member->status === "HEAD";
                 })->first()->employee,
-                "submitted_date" => ($submitted_date->day . " " . $submitted_date->locale('ID')->getTranslatedMonthName() . " " . $submitted_date->year),
+                "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
                 "status" => $research->report->status === "SUBMITTED" ? "Menunggu Peninjauan" : "Telah Ditinjau",
             ];
         });
         return view('dashboard.research.report.index', [
+            'page' => 'report-research',
             'reports' => $reports
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('dashboard.research.report.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return redirect('report-research');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Research  $research
-     * @return \Illuminate\Http\Response
-     */
     public function show(Research $report_research)
     {
         $submitted_date = new Carbon($report_research->proposal->submitted_date);
 
+        $report = [
+            "research_id" => $report_research->id,
+            "title" => $report_research->title,
+            "head" => $report_research->members->filter(function ($member) {
+                return $member->status === "HEAD";
+            })->first()->employee,
+            "research_member" => ($report_research->members->filter(function ($member) {
+                return $member->status === "RESEARCHER";
+            }))->map(function ($member) {
+                return $member->employee;
+            }),
+            "extensionists_member" => ($report_research->members->filter(function ($member) {
+                return $member->status === "EXTENSIONISTS";
+            }))->map(function ($member) {
+                return $member->employee;
+            }),
+            "budgets" => $report_research->proposal->budgets,
+            "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+            "submitted_time" => ($submitted_date->hour . ":" . ($submitted_date->minute < 10 ? "0" . $submitted_date->minute : $submitted_date->minute)),
+            "file" => $report_research->report->file,
+            "status" => $report_research->report->status,
+            "comments" => $report_research->report->comments
+        ];
+
+        if ($report_research->report->approved_date) {
+            $approved_date = new Carbon($report_research->report->approved_date);
+            $report["approved_date"] = $approved_date->day . " " . $approved_date->getTranslatedMonthName() . " " . $approved_date->year;
+            $report["approved_time"] = $approved_date->hour . ":" . ($approved_date->minute < 10 ? ("0" . $approved_date->minute) : $approved_date->minute);
+        }
+
         return view('dashboard.research.report.show', [
-            'report' =>  (object)[
-                "research_id" => $report_research->id,
-                "title" => $report_research->title,
-                "head" => $report_research->members->filter(function ($member) {
-                    return $member->status === "HEAD";
-                })->first()->employee,
-                "research_member" => ($report_research->members->filter(function ($member) {
-                    return $member->status === "RESEARCHER";
-                }))->map(function ($member) {
-                    return $member->employee;
-                }),
-                "extensionists_member" => ($report_research->members->filter(function ($member) {
-                    return $member->status === "EXTENSIONISTS";
-                }))->map(function ($member) {
-                    return $member->employee;
-                }),
-                "submitted_date" => ($submitted_date->day . " " . $submitted_date->locale('ID')->getTranslatedMonthName() . " " . $submitted_date->year),
-                "file" => $report_research->report->file,
-                "status" => $report_research->report->status,
-                "comments" => $report_research->report->comments
-            ],
+            'page' => 'report-research',
+            'report' =>  (object)$report,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Research  $research
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Research $report_research)
     {
-        $file = false;
         if ($report_research->report) {
             $file = $report_research->report->file;
         }
 
         return view('dashboard.research.report.edit', [
+            'page' => 'report-research',
             'report' =>  (object)[
                 "research_id" => $report_research->id,
                 "title" => $report_research->title,
@@ -134,25 +109,25 @@ class ReportResearchController extends Controller
                 }))->map(function ($member) {
                     return $member->employee;
                 }),
-                "file" => $file
+                "budgets" => $report_research->proposal->budgets,
+                "file" => $file ?? ''
             ],
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Research  $research
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Research $report_research)
     {
         $validatedData = $request->validate([
-            "report" => "required"
+            'budged.*' => 'required|mimes:png,jpg|max:1024',
+            'report' => 'required|mimes:pdf|max:2048',
+        ], [
+            "budged.*.mimes" => "File Nota harus bertipe .png atau .jpg",
+            "budged.*.max" => "File Nota tidak boleh lebih dari 1MB",
+            "report.mimes" => "File Laporan Akhir harus bertipe .pdf",
+            "report.max" => "File Laporan Akhir tidak boleh lebih dari 2MB",
         ]);
-        if ($report_research->report) {
 
+        if ($report_research->report) {
             $reportData = [
                 "submitted_date" => Carbon::now(),
                 "status" => "SUBMITTED"
@@ -163,11 +138,24 @@ class ReportResearchController extends Controller
                 $reportData["file"] = $request->file('report')->store('report');
             }
 
+            foreach ($validatedData['budged'] as $index => $budged) {
+                if ($report_research->proposal->budgets[$index]) Storage::delete($report_research->proposal->budgets[$index]);
+                Budget::where('id', $report_research->proposal->budgets[$index]->id)->update([
+                    "memorandum" => $request->file('budged')[$index]->store('memorandum'),
+                ]);
+            }
+
             Report::where('id', $report_research->report_id)->update($reportData);
+            return redirect('report-research')->with('updated', $report_research->id);
         } else {
             if ($request->file('report'))
                 $validatedData["file"] = $request->file('report')->store('report');
 
+            foreach ($validatedData['budged'] as $index => $budged) {
+                Budget::where('id', $report_research->proposal->budgets[$index]->id)->update([
+                    "memorandum" => $request->file('budged')[$index]->store('memorandum'),
+                ]);
+            }
             Research::where('id', $report_research->id)->update([
                 "report_id" => Report::create([
                     "file" => $validatedData['file'],
@@ -176,29 +164,25 @@ class ReportResearchController extends Controller
                     "comments" => NULL
                 ])->id
             ]);
+            return redirect('report-research')->with('created', $report_research->id);
         }
-        return redirect('report-research');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Research  $research
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Research $report_research)
     {
         Research::where('id', $report_research->id)->update(['report_id' => NULL]);
         if ($report_research->report->file) Storage::delete($report_research->report->file);
         Report::where('id', $report_research->report_id)->delete();
-        return redirect('report-research');
+        return redirect('report-research')->with("deleted", $report_research->title);
     }
 
     public function approve(Request $request, Research $report_research)
     {
         $validatedData = $request->validate([
             'submit' => 'string',
-            'comments' => 'string|required'
+            'comments' => 'required'
+        ], [
+            'comments.required' => "Keterangan perlu di-isi"
         ]);
 
         $approvStatus = "APPROVED";
@@ -215,6 +199,6 @@ class ReportResearchController extends Controller
         ];
 
         Report::where('id', $report_research->report_id)->update($reportData);
-        return redirect('/report-research');
+        return redirect('/report-research')->with($validatedData['status'], $report_research->title);
     }
 }

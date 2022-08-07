@@ -27,8 +27,35 @@
                                 <input class="form-control" type="text" value="{{ $study->head->name }}" disabled>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Judul Penelitian</label>
+                                <label class="control-label">Judul Penelitian yang Dikaji</label>
                                 <input class="form-control" type="text" value="{{ $study->title }}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Status Penelitian</label>
+                                <br>
+                                @if ($study->status === 'WAITING')
+                                    <span class="badge badge-warning">Menunggu Anggaran</span>
+                                @elseif ($study->status === 'APPROVED')
+                                    <span class="badge badge-success">Selesai</span>
+                                @elseif ($study->status === 'SUBMITTED')
+                                    <span class="badge badge-warning">Menunggu Peninjauan Laporan Akhir</span>
+                                @elseif ($study->status === 'ONGOING')
+                                    <span class="badge badge-info">Sedang Berjalan</span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Anggaran</label>
+                                <ol>
+                                    @foreach ($study->budgets as $budget)
+                                        <li>
+                                            {{ $budget->name }} (Rp {{ number_format($budget->cost, 0, ',', '.') }})
+                                            @if ($budget->memorandum)
+                                                | <a href="{{ asset('storage/' . $budget->memorandum) }}"
+                                                    target="_blank">NOTA</a>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ol>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Anggota Penelitian</label>
@@ -84,23 +111,23 @@
                                 <h6>Pegawai yang Meninjau Laporan Akhir</h6>
                                 <div class="form-group">
                                     <label class="control-label">NIP</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $study->report_reviewer->nip }}" disabled>
+                                    <input type="text" class="form-control" value="{{ $study->report_reviewer->nip }}"
+                                        disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Nama</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $study->report_reviewer->name }}" disabled>
+                                    <input type="text" class="form-control" value="{{ $study->report_reviewer->name }}"
+                                        disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Tanggal Pengajuan</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $study->report_submitted_date }}" disabled>
+                                    <input type="text" class="form-control" value="{{ $study->report_submitted_date }}"
+                                        disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Waktu Pengajuan</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $study->report_submitted_time }}" disabled>
+                                    <input type="text" class="form-control" value="{{ $study->report_submitted_time }}"
+                                        disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Tanggal Disetujui</label>
@@ -132,6 +159,14 @@
                             Menyerahkan Laporan Akhir
                         </a>
                     @endif
+                    @can('external')
+                        @if ($study->status === 'WAITING')
+                            <a class="btn btn-warning" href="/study/budget/{{ $study->id }}" onclick="return confirm('Yakin ingin mengirimkan pemberitahuan anggaran?')">
+                                <i class="fa fa-share-square"></i>
+                                Pemberitahuan Anggaran
+                            </a>
+                        @endif
+                    @endcan
                 </div>
             </div>
         </div>

@@ -25,26 +25,26 @@
                                             <label class="control-label">NIK</label>
                                             <input class="form-control" type="text" name="nik"
                                                 placeholder="Masukkan NIP" autofocus autocomplete="off"
-                                                value="{{ old('nik') }}">
+                                                value="{{ old('nik') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Nama</label>
                                             <input class="form-control" type="text" name="name"
-                                                placeholder="Masukkan Nama" autocomplete="off" value="{{ old('name') }}">
+                                                placeholder="Masukkan Nama" autocomplete="off" value="{{ old('name') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Jenis Kelamin</label>
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="1"
-                                                        name="sex" {{ old('sex') == '1' ? 'checked' : '' }}>Laki -
+                                                        name="sex" {{ old('sex') == '1' ? 'checked' : '' }} required>Laki -
                                                     Laki
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="0"
-                                                        name="sex" {{ old('sex') == '0' ? 'checked' : '' }}>Perempuan
+                                                        name="sex" {{ old('sex') == '0' ? 'checked' : '' }} required>Perempuan
                                                 </label>
                                             </div>
                                         </div>
@@ -52,7 +52,7 @@
                                             <label class="control-label">Nomor Telepon</label>
                                             <input class="form-control" type="text" name="phone_number"
                                                 placeholder="Masukkan Nomor Telepon" autocomplete="off"
-                                                value="{{ old('phone_number') }}">
+                                                value="{{ old('phone_number') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Pegawai yang dikunjungi</label>
@@ -78,12 +78,12 @@
                                         <div class="form-group">
                                             <label class="control-label">Instansi</label>
                                             <input class="form-control" type="text" name="agency"
-                                                placeholder="Asal Instansi" autocomplete="off" value="{{ old('agency') }}">
+                                                placeholder="Asal Instansi" autocomplete="off" value="{{ old('agency') }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Keperluan</label>
                                             <input class="form-control" type="text" name="necessity"
-                                                placeholder="Keperluan" autocomplete="off" value="{{ old('necessity') }}">
+                                                placeholder="Keperluan" autocomplete="off" value="{{ old('necessity') }}" required>
                                         </div>
                                     </div>
                                 </div>

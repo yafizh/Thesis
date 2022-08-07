@@ -34,6 +34,30 @@
                                     <label class="control-label">Judul Penelitian</label>
                                     <input class="form-control" type="text" value="{{ $report->title }}" disabled>
                                 </div>
+                                <h6>Anggaran</h6>
+                                <div class="form-group">
+                                    @foreach ($report->budgets as $index => $budget)
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label class="control-label">Nota {{ $budget->name }} (Rp
+                                                    {{ number_format($budget->cost, 0, ',', '.') }})</label>
+                                                <div class="custom-file">
+                                                    <input type="file" name="budged[]"
+                                                        class="custom-file-input {{ $errors->has('budged.' . $index) ? 'is-invalid' : '' }}"
+                                                        onchange="preview(this)" accept="image/*" required>
+                                                    <label class="custom-file-label">Pilih File Nota</label>
+                                                </div>
+                                                <small class="form-text text-muted">File Nota bertipe .jpg
+                                                    atau .png dan
+                                                    maksimal ukuran 1MB</small>
+                                                @if ($errors->has('budged.' . $index))
+                                                    <div class="form-control-feedback">
+                                                        {{ $errors->first('budged.' . $index) }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label">Anggota Penelitian</label>
                                     <ol>
@@ -53,21 +77,28 @@
                                 <div class="form-group">
                                     <label class="control-label">File Laporan Akhir</label>
                                     <div class="custom-file">
-                                        <input type="file" name="report" class="custom-file-input"
+                                        <input type="file" name="report"
+                                            class="custom-file-input @error('report') is-invalid @enderror"
                                             onchange="preview(this)" accept=".pdf" required>
                                         <label class="custom-file-label">Pilih File Laporan Akhir</label>
                                     </div>
+                                    <small class="form-text text-muted">File Laporan Akhir bertipe .pdf dan
+                                        maksimal ukuran 2MB</small>
+                                    @error('report')
+                                        <div class="form-control-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <div class="tile-footer d-flex justify-content-between">
                         <a class="btn btn-secondary" href="{{ url()->previous() }}">
-                            <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                            <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
                             Kembali
                         </a>
                         &nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary" type="submit"
+                            onclick="return confirm('Yakin ingin melakukan penyerahan Laporan Akhir ini?')">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Submit
                         </button>
@@ -82,9 +113,9 @@
     </div>
     <script>
         function preview(input) {
+            input.nextElementSibling.innerHTML = input.files[0].name;
             const iframe = document.querySelector(`#preview-${input.getAttribute('name')}`);
             iframe.src = URL.createObjectURL(input.files[0]);
-            input.nextElementSibling.innerHTML = input.files[0].name;
         }
     </script>
 @endsection

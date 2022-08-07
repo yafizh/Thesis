@@ -1,4 +1,4 @@
-@extends('dashboard.print.main')
+@extends('dashboard.layouts.print')
 
 @section('content')
     <h4 class="text-center my-3">Laporan Data Pegawai</h4>
@@ -9,10 +9,10 @@
         </strong>
         <br>
         <span style="width: 150px; display: inline-block;">Dari Tanggal</span>
-        <span>: {{ $from }}</span>
+        <span>: {{ empty($from) ? 'Semua' : $from }}</span>
         <br>
         <span style="width: 150px; display: inline-block;">Sampai Tanggal</span>
-        <span>: {{ $to }}</span>
+        <span>: {{ empty($to) ? 'Semua' : $to }}</span>
 
         <br>
         <br>
@@ -23,7 +23,7 @@
         </strong>
         <br>
         <span style="width: 150px; display: inline-block;">Status</span>
-        <span>: {{ is_null($status) ? 'Semua Jenis' : $status }}</span>
+        <span>: {{ empty($status) ? 'Semua' : ($status == "INTERNAL" ? "Internal" : "Eksternal") }}</span>
     </section>
     <main>
         <table class="table table-striped table-bordered">
@@ -47,7 +47,7 @@
                             {{ $employee->status === 'INTERNAL' ? 'Internal' : 'Eksternal' }}</td>
                         <td class="text-center">{{ $employee->start_date }}
                         </td>
-                        <td class="text-center">{{ $employee->work_duration }} Hari</td>
+                        <td class="text-center">{{ $employee->work_duration }}</td>
                     </tr>
                 @endforeach
             </tbody>

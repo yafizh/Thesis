@@ -15,4 +15,14 @@ class Proposal extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function research()
+    {
+        return $this->hasOne(Research::class);
+    }
+
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
 }

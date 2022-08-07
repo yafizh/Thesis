@@ -1,7 +1,7 @@
-@extends('dashboard.print.main')
+@extends('dashboard.layouts.print')
 
 @section('content')
-    <h4 class="text-center my-3">Laporan Proposal Penelitian</h4>
+    <h4 class="text-center my-3">Laporan Proposal Pengkajian</h4>
     <section class="mb-3">
         <strong>
             <span style="width: 150px; display: inline-block;">Filter Tanggal</span>
@@ -9,10 +9,10 @@
         </strong>
         <br>
         <span style="width: 150px; display: inline-block;">Dari Tanggal</span>
-        <span>: {{ $from }}</span>
+        <span>: {{ empty($from) ? 'Semua' : $from }}</span>
         <br>
         <span style="width: 150px; display: inline-block;">Sampai Tanggal</span>
-        <span>: {{ $to }}</span>
+        <span>: {{ empty($to) ? 'Semua' : $to }}</span>
 
         <br>
         <br>
@@ -23,7 +23,7 @@
         </strong>
         <br>
         <span style="width: 150px; display: inline-block;">Status</span>
-        <span>: {{ is_null($status) ? 'Semua Jenis' : $status }}</span>
+        <span>: {{ $status }}</span>
     </section>
     <main>
         <table class="table table-striped table-bordered">
@@ -32,6 +32,7 @@
                     <th rowspan="2" style="vertical-align: middle;" class="text-center">No</th>
                     <th rowspan="2" style="vertical-align: middle;" class="text-center">Judul</th>
                     <th colspan="2" class="text-center">Penanggung Jawab</th>
+                    <th colspan="2" class="text-center">Peninjau</th>
                     <th rowspan="2" style="vertical-align: middle;" class="text-center">Tanggal Pengajuan
                     </th>
                     <th rowspan="2" style="vertical-align: middle;" class="text-center">Status</th>
@@ -39,6 +40,8 @@
                     </th>
                 </tr>
                 <tr>
+                    <th class="text-center">NIP</th>
+                    <th class="text-center">Nama</th>
                     <th class="text-center">NIP</th>
                     <th class="text-center">Nama</th>
                 </tr>
@@ -50,9 +53,17 @@
                         <td style="vertical-align: middle;" class="text-center">{{ $proposal->title }}</td>
                         <td style="vertical-align: middle;" class="text-center">{{ $proposal->head->nip }}</td>
                         <td style="vertical-align: middle;">{{ $proposal->head->name }}</td>
+                        @if (isset($proposal->reviewer->nip) && isset($proposal->reviewer->name))
+                            <td style="vertical-align: middle;" class="text-center">
+                                {{ $proposal->reviewer->nip }}</td>
+                            <td style="vertical-align: middle;">{{ $proposal->reviewer->name }}</td>
+                        @else
+                            <td colspan="2" style="vertical-align: middle;" class="text-center">
+                                {{ $proposal->reviewer }}</td>
+                        @endif
                         <td style="vertical-align: middle;" class="text-center">{{ $proposal->submitted_date }}</td>
                         <td style="vertical-align: middle;" class="text-center">{{ $proposal->status }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->approved_duration }} Hari</td>
+                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->approved_duration }}</td>
                     </tr>
                 @endforeach
             </tbody>

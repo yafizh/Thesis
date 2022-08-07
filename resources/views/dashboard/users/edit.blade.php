@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <div class="tile-footer d-flex justify-content-between">
                         <a class="btn btn-secondary" href="/users">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>
                             Kembali

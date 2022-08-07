@@ -11,12 +11,6 @@
             <li class="breadcrumb-item active"><a href="#">Penelitian</a></li>
         </ul>
     </div>
-    <style>
-        tr td:last-child {
-            width: 1%;
-            white-space: nowrap;
-        }
-    </style>
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
@@ -25,25 +19,25 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center">No</th>
+                                    <th class="text-center td-fit">No</th>
                                     <th class="text-center">Penananggung Jawab</th>
                                     <th class="text-center">Tanggal Pengajuan</th>
                                     <th class="text-center">Tanggal Disetujui</th>
                                     <th class="text-center">Lama Kegiatan</th>
                                     <th class="text-center">Tanggal Selesai</th>
-                                    <th class="text-center">Detail</th>
+                                    <th class="text-center td-fit">Detail</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($researches as $research)
                                     <tr>
-                                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                                        <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
                                         <td class="text-center align-middle">{{ $research->head->name }}</td>
                                         <td class="text-center align-middle">{{ $research->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $research->approved_date }}</td>
                                         <td class="text-center align-middle">{{ $research->research_duration }} Hari</td>
                                         <td class="text-center align-middle">{{ $research->report_approved_date ? $research->report_approved_date : "Menunggu"  }}</td>
-                                        <td>
+                                        <td class="td-fit">
                                             <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ $research->id }}"
                                                 class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"
                                                     aria-hidden="true"></i></a>

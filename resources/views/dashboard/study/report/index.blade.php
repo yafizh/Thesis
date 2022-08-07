@@ -11,13 +11,62 @@
             <li class="breadcrumb-item active"><a href="#">Data Laporan Akhir Penelitian</a></li>
         </ul>
     </div>
-    <style>
-        tr td:last-child {
-            width: 1%;
-            white-space: nowrap;
-        }
-    </style>
     <div class="row">
+        @can('employee')
+            @can('internal')
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between">
+                        @if (session()->has('created'))
+                            <div class="alert alert-success flex-grow-1">
+                                Berhasil Melakukan Penyerahan Laporan Akhir Pengkajian!
+                                <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ session()->get('created') }}"
+                                    class="alert-link">
+                                    Lihat
+                                </a>
+                            </div>
+                        @elseif (session()->has('updated'))
+                            <div class="alert alert-success flex-grow-1">
+                                Berhasil Memperbaharui Data Laporan Akhir Pengkajian!
+                                <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ session()->get('updated') }}"
+                                    class="alert-link">
+                                    Lihat
+                                </a>
+                            </div>
+                        @elseif (session()->has('deleted'))
+                            <div class="alert alert-success flex-grow-1">
+                                Berhasil Membatalkan Penyerahan Laporan Akhir Pengkajian dengan judul:
+                                <strong>{{ session()->get('deleted') }}</strong>
+                            </div>
+                        @else
+                            <div class="alert alert-info flex-grow-1">
+                                Klik Tombol <strong>Detail</strong> Untuk Memperbaharui atau Menghapus Laporan Akhir Pengkajian!
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endcan
+            @can('external')
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between">
+                        @if (session()->has('APPROVED'))
+                            <div class="alert alert-success flex-grow-1">
+                                Berhasil Menyetujui Penyerahan Laporan Akhir Pengkajian dengan judul:
+                                <strong>{{ session()->get('APPROVED') }}</strong>
+                            </div>
+                        @elseif (session()->has('REJECTED'))
+                            <div class="alert alert-success flex-grow-1">
+                                Berhasil Menolak Penyerahan Laporan Akhir Pengkajian dengan judul:
+                                <strong>{{ session()->get('REJECTED') }}</strong>
+                            </div>
+                        @else
+                            <div class="alert alert-info flex-grow-1">
+                                Klik Tombol <strong>Detail</strong> Untuk Menyetujui/Menolak Penyerahan Laporan Akhir!
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endcan
+        @endcan
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">
@@ -25,40 +74,24 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center">No</th>
+                                    <th class="text-center td-fit">No</th>
                                     <th class="text-center">Penanggung Jawab</th>
                                     <th class="text-center">Tanggal Penyerahan</th>
                                     <th class="text-center">Status</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th class="text-center td-fit">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
-                                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                                        <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
                                         <td class="text-center align-middle">{{ $report->head->name }}</td>
                                         <td class="text-center align-middle">{{ $report->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $report->status }}</td>
-                                        <td>
+                                        <td class="td-fit">
                                             <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ $report->study_id }}"
                                                 class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"
                                                     aria-hidden="true"></i></a>
-                                            @canany(['internal', 'admin'])
-                                                @if (auth()->user()->status == 'ADMIN' || $report->head->nip == auth()->user()->employee->nip)
-                                                    <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ $report->study_id }}/edit"
-                                                        class="btn btn-warning btn-sm"><i class="m-0 fa fa-pencil-square-o"
-                                                            aria-hidden="true"></i></a>
-                                                    <form
-                                                        action="/{{ explode('.', Route::currentRouteName())[0] }}/{{ $report->study_id }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button onclick="return confirm('Yakin?')" type="submit"
-                                                            class="btn btn-danger btn-sm"><i class="m-0 fa fa-trash-o"
-                                                                aria-hidden="true"></i></button>
-                                                    </form>
-                                                @endif
-                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

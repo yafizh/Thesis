@@ -9,23 +9,18 @@ use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
+        $guests = Guest::latest()->get()->map(function ($guest) {
+            $guest->visit_date = ($guest->created_at->day . " " . $guest->created_at->getTranslatedMonthName() . " " . $guest->created_at->year);
+            return $guest;
+        });
         return view('dashboard.guests.index', [
-            "guests" => Guest::all()
+            "guests" => $guests
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('dashboard.guests.create', [
@@ -34,12 +29,6 @@ class GuestController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -60,23 +49,15 @@ class GuestController extends Controller
         return redirect('/guests');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Guest  $guest
-     * @return \Illuminate\Http\Response
-     */
     public function show(Guest $guest)
     {
-        //
+        return view('dashboard.guests.show', [
+            "guest" => $guest,
+            "employees" => Employee::all(),
+            'DAY_IN_INDONESIA' => ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Guest  $guest
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Guest $guest)
     {
         return view('dashboard.guests.edit', [
@@ -86,13 +67,6 @@ class GuestController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Guest  $guest
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Guest $guest)
     {
         $validatedData = $request->validate([
@@ -106,23 +80,67 @@ class GuestController extends Controller
             'image' => 'required',
         ]);
 
-        $validatedData['user_id'] = auth()->user()->id;
-
         Guest::where('id', $guest->id)->update($validatedData);
 
         return redirect('/guests');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Guest  $guest
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Guest $guest)
     {
         Guest::destroy($guest->id);
-
         return redirect('/guests');
+    }
+
+    public function report(Request $request)
+    {
+        if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
+            $guests = Guest::latest()->get()->map(function ($guest) {
+                return (object)[
+                    'nik' => $guest->nik,
+                    'name' => $guest->name,
+                    'visit_date' => ($guest->created_at->day . " " . $guest->created_at->getTranslatedMonthName() . " " . $guest->created_at->year),
+                    'employee' => $guest->employee->name,
+                    'necessity' => $guest->necessity
+                ];
+            });
+            return view('dashboard.guests.report', [
+                'guests' => $guests
+            ]);
+        } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
+            if (!empty($request->get('from')) && !empty($request->get('to')))
+                $guests = Guest::whereBetween('created_at', [$request->get('from'), $request->get('to')])->get()->map(function ($guest) {
+                    return (object)[
+                        'nik' => $guest->nik,
+                        'name' => $guest->name,
+                        'visit_date' => ($guest->created_at->day . " " . $guest->created_at->getTranslatedMonthName() . " " . $guest->created_at->year),
+                        'employee' => $guest->employee->name,
+                        'necessity' => $guest->necessity
+                    ];
+                });
+            else
+                $guests = Guest::latest()->get()->map(function ($guest) {
+                    return (object)[
+                        'nik' => $guest->nik,
+                        'name' => $guest->name,
+                        'visit_date' => ($guest->created_at->day . " " . $guest->created_at->getTranslatedMonthName() . " " . $guest->created_at->year),
+                        'employee' => $guest->employee->name,
+                        'necessity' => $guest->necessity
+                    ];
+                });
+
+            if ($request->get('submit') === 'filter') {
+                return view('dashboard.guests.report', [
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'guests' => $guests
+                ]);
+            } elseif ($request->get('submit') === 'print') {
+                return view('dashboard.guests.print', [
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'guests' => $guests
+                ]);
+            }
+        }
     }
 }

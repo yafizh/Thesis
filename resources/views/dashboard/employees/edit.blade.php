@@ -24,28 +24,28 @@
                                 <div class="form-group">
                                     <label class="control-label">NIP</label>
                                     <input class="form-control" type="text" name="nip" placeholder="Masukkan NIP"
-                                        autofocus autocomplete="off" value="{{ old('nip', $employee->nip) }}">
+                                        autocomplete="off" value="{{ old('nip', $employee->nip) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Nama</label>
                                     <input class="form-control" type="text" name="name" placeholder="Masukkan Nama"
-                                        autocomplete="off" value="{{ old('name', $employee->name) }}">
+                                        autocomplete="off" value="{{ old('name', $employee->name) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Jabatan</label>
                                     <input class="form-control" type="text" name="position"
                                         placeholder="Masukkan Jabatan" autocomplete="off"
-                                        value="{{ old('position', $employee->position) }}">
+                                        value="{{ old('position', $employee->position) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Nomor Telepon</label>
                                     <input class="form-control" type="text" name="phone_number"
                                         placeholder="Masukkan Nomor Telepon" autocomplete="off"
-                                        value="{{ old('phone_number', $employee->phone_number) }}">
+                                        value="{{ old('phone_number', $employee->phone_number) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Pendidikan Terakhir</label>
-                                    <select class="form-control" name="academic_background">
+                                    <select class="form-control" name="academic_background" required>
                                         <option value="" selected disabled>Pilih Pendidikan Terakhir</option>
                                         <option
                                             {{ old('academic_background', $employee->academic_background) === 'SMK/SMA' ? 'selected' : '' }}
@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Status Pegawai</label>
-                                    <select class="form-control" name="status">
+                                    <select class="form-control" name="status" required>
                                         <option value="" selected disabled>Pilih Status Pegawai</option>
                                         <option {{ old('status', $employee->status) === 'INTERNAL' ? 'selected' : '' }}
                                             value="INTERNAL">Internal</option>
@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Tanggal Lahir</label>
                                     <input class="form-control" type="date" name="birth" required
-                                        value="{{ old('birth', $employee->birth) }}">
+                                        value="{{ old('birth', $employee->birth) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Terhitung Mulai Tanggal</label>
@@ -86,19 +86,20 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="sex" value="1"
-                                                {{ old('sex', $employee->sex) === 1 ? 'checked' : '' }}>Laki - Laki
+                                                {{ old('sex', $employee->sex) === 1 ? 'checked' : '' }} required>Laki -
+                                            Laki
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="sex" value="0"
-                                                {{ old('sex', $employee->sex) === 0 ? 'checked' : '' }}>Perempuan
+                                                {{ old('sex', $employee->sex) === 0 ? 'checked' : '' }} required>Perempuan
                                         </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Alamat</label>
-                                    <textarea class="form-control" name="address" rows="4" autocomplete="off">{{ old('address', $employee->address) }}</textarea>
+                                    <textarea class="form-control" name="address" rows="8" autocomplete="off" required>{{ old('address', $employee->address) }}</textarea>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -112,8 +113,6 @@
                                         background-color: gray;
                                         color: white;
                                         display: none;
-                                        /* justify-content: center;
-                                                    align-items: center; */
                                     }
 
                                     .employee-image {
@@ -136,8 +135,7 @@
                                         <div class="col-md-6 p-1">
                                             <div class="ktp-placeholder">
                                                 Tidak Ada Dokumen</div>
-                                            <iframe
-                                                src="{{ asset('storage/' . old('file_ktp', $employee->file_ktp)) }}">
+                                            <iframe src="{{ asset('storage/' . old('file_ktp', $employee->file_ktp)) }}">
                                                 <p>This browser does not support PDF!</p>
                                             </iframe>
                                         </div>
@@ -168,51 +166,72 @@
                                 <div class="form-group">
                                     <label class="control-label mb-3">KTP</label>
                                     <div class="custom-file">
-                                        <input type="file" name="file_ktp" class="custom-file-input"
-                                            onchange="preview(this, 'ktp-placeholder', 'doc')">
-                                        <label class="custom-file-label">Choose file</label>
+                                        <input type="file" name="file_ktp"
+                                            class="custom-file-input @error('file_ktp') is-invalid @enderror"
+                                            onchange="preview(this, 'ktp-placeholder', 'doc')" accept=".pdf">
+                                        <label class="custom-file-label">Pilih file baru untuk memperbaharui KTP</label>
                                     </div>
+                                    <small class="form-text text-muted">File KTP bertipe .pdf dan
+                                        maksimal ukuran 2MB</small>
+                                    @error('file_ktp')
+                                        <div class="form-control-feedback text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Gambar</label>
                                     <div class="custom-file">
-                                        <input type="file" name="file_image" class="custom-file-input"
-                                            onchange="preview(this, 'image-placeholder', 'image')">
-                                        <label class="custom-file-label">Choose file</label>
+                                        <input type="file" name="file_image"
+                                            class="custom-file-input @error('file_image') is-invalid @enderror"
+                                            onchange="preview(this, 'image-placeholder', 'image')" accept="image/*">
+                                        <label class="custom-file-label">Pilih file baru untuk memperbaharui Gambar</label>
                                     </div>
+                                    <small class="form-text text-muted">File Gambar bertipe .png atau .jpg dan
+                                        maksimal ukuran 1MB</small>
+                                    @error('file_image')
+                                        <div class="form-control-feedback text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Ijazah</label>
                                     <div class="custom-file">
-                                        <input type="file" name="file_ijazah" class="custom-file-input"
-                                            onchange="preview(this, 'ijazah-placeholder', 'doc')">
-                                        <label class="custom-file-label">Choose file</label>
+                                        <input type="file" name="file_ijazah"
+                                            class="custom-file-input @error('file_ijazah') is-invalid @enderror"
+                                            onchange="preview(this, 'ijazah-placeholder', 'doc')" accept=".pdf">
+                                        <label class="custom-file-label">Pilih file baru untuk memerbaharui Ijazah</label>
                                     </div>
+                                    <small class="form-text text-muted">File Ijazah bertipe .pdf dan
+                                        maksimal ukuran 2MB</small>
+                                    @error('file_ijazah')
+                                        <div class="form-control-feedback text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label mb-3">SK Pengangkatan</label>
                                     <div class="custom-file">
-                                        <input type="file" name="file_sk_pengangkatan" class="custom-file-input"
-                                            onchange="preview(this, 'sk-pengangkatan-placeholder', 'doc')">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                        <input type="file" name="file_sk_pengangkatan"
+                                            class="custom-file-input @error('file_sk_pengangkatan')  @enderror"
+                                            onchange="preview(this, 'sk-pengangkatan-placeholder', 'doc')" accept=".pdf">
+                                        <label class="custom-file-label" for="customFile">Pilih file baru untuk
+                                            memperbaharui SK Pengangkatan</label>
                                     </div>
+                                    <small class="form-text text-muted">File SK Pengangkatan bertipe .pdf dan
+                                        maksimal ukuran 2MB</small>
+                                    @error('file_sk_pengangkatan')
+                                        <div class="form-control-feedback text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <script>
                                     function preview(input, placeholder_class, preview) {
+                                        const placeholder = document.querySelector(`.${placeholder_class}`);
                                         if (preview === 'image') {
-                                            const placeholder = document.querySelector(`.${placeholder_class}`);
                                             const preview = placeholder.nextElementSibling;
+
+                                            input.nextElementSibling.innerHTML = input.files[0].name;
+                                            preview.src = URL.createObjectURL(input.files[0]);
+
                                             placeholder.style.display = 'none';
                                             preview.classList.remove("d-none");
-
-                                            const oFReader = new FileReader();
-                                            oFReader.readAsDataURL(input.files[0]);
-
-                                            oFReader.onload = function(oFREvent) {
-                                                preview.src = oFREvent.target.result;
-                                            };
                                         } else if (preview === 'doc') {
-                                            const placeholder = document.querySelector(`.${placeholder_class}`);
                                             const iframe = placeholder.nextElementSibling;
                                             placeholder.style.display = 'none';
                                             iframe.classList.remove("d-none");
@@ -238,9 +257,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
-                        <a class="btn btn-secondary" href="/employees">
-                            <i class="fa fa-fw fa-lg fa-times-circle"></i>
+                    <div class="tile-footer d-flex justify-content-between">
+                        <a class="btn btn-secondary" href="{{ url()->previous() }}">
+                            <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
                             Kembali
                         </a>
                         &nbsp;&nbsp;&nbsp;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\Employee;
 use App\Models\Proposal;
 use App\Models\Research;
@@ -13,11 +14,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ProposalStudyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (auth()->user()->status === "ADMIN") {
@@ -43,6 +39,7 @@ class ProposalStudyController extends Controller
             $submitted_date = new Carbon($study->proposal->submitted_date);
             return (object)[
                 "study_id" => $study->id,
+                "title" => $study->research->title,
                 "head" => $study->members->filter(function ($member) {
                     return $member->status === "HEAD";
                 })->first()->employee,
@@ -52,19 +49,16 @@ class ProposalStudyController extends Controller
         });
 
         return view('dashboard.study.proposal.index', [
+            'page' => 'proposal-study',
             'proposals' => $proposals
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $nip = auth()->user()->employee->nip;
         return view('dashboard.study.proposal.create', [
+            'page' => 'proposal-study',
             'employees' => Employee::where('nip', '!=', $nip)->where('status', 'INTERNAL')->orderBy('name')->get()->filter(function ($employee) {
                 return $employee->user->status === "EMPLOYEE";
             }),
@@ -74,44 +68,58 @@ class ProposalStudyController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'research_id' => 'required',
             'research_member' => 'required|array',
             'extensionists_member' => 'required|array',
-            'proposal' => 'required',
+            'proposal' => 'required|mimes:pdf|max:2048',
+            'name' => 'required|array',
+            'cost' => 'required|array',
+        ], [
+            "proposal.mimes" => "File Proposal harus bertipe .pdf",
+            "proposal.max" => "File Proposal tidak boleh lebih dari 2MB",
         ]);
+
 
         if ($request->file('proposal')) {
             $validatedData['proposal'] = $request->file('proposal')->store('proposal');
         }
 
-        $id = Study::create([
-            "research_id" => $validatedData['research_id'],
-            "proposal_id" => Proposal::create([
-                "file" => $validatedData['proposal'],
-                "submitted_date" => Carbon::now(),
-                "status" => "SUBMITTED"
-            ])->id
+        $proposal_id = Proposal::create([
+            "file" => $validatedData['proposal'],
+            "submitted_date" => Carbon::now(),
+            "status" => "SUBMITTED"
         ])->id;
+
+        $study_id = Study::create([
+            "research_id" => $validatedData['research_id'],
+            "proposal_id" => $proposal_id
+        ])->id;
+
+        foreach ($validatedData['name'] as $index => $name) {
+            if (($index + 1) != count($validatedData['name'])) {
+                if (!is_null($validatedData['name'][$index]) && !is_null($validatedData['cost'][$index])) {
+                    Budget::create([
+                        "proposal_id" => $proposal_id,
+                        "name" => $validatedData['name'][$index],
+                        "cost" => $validatedData['cost'][$index],
+                    ]);
+                }
+            }
+        }
 
         StudyMember::create([
             'employee_id' => auth()->user()->employee->id,
-            'study_id' => $id,
+            'study_id' => $study_id,
             'status' => 'HEAD'
         ]);
 
         foreach ($validatedData['research_member'] as $research_member) {
             StudyMember::create([
                 'employee_id' => $research_member,
-                'study_id' => $id,
+                'study_id' => $study_id,
                 'status' => 'RESEARCHER'
             ]);
         }
@@ -119,70 +127,75 @@ class ProposalStudyController extends Controller
         foreach ($validatedData['extensionists_member'] as $extensionists_member) {
             StudyMember::create([
                 'employee_id' => $extensionists_member,
-                'study_id' => $id,
+                'study_id' => $study_id,
                 'status' => 'EXTENSIONISTS'
             ]);
         }
-        return redirect('/proposal-study');
+        return redirect('/proposal-study')->with('created', $study_id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Study  $study
-     * @return \Illuminate\Http\Response
-     */
     public function show(Study $proposal_study)
     {
         $submitted_date = new Carbon($proposal_study->proposal->submitted_date);
 
+        $proposal = [
+            "study_id" => $proposal_study->id,
+            "title" => $proposal_study->research->title,
+            "head" => $proposal_study->members->filter(function ($member) {
+                return $member->status === "HEAD";
+            })->first()->employee,
+            "study_member" => ($proposal_study->members->filter(function ($member) {
+                return $member->status === "RESEARCHER";
+            }))->map(function ($member) {
+                return $member->employee;
+            }),
+            "extensionists_member" => ($proposal_study->members->filter(function ($member) {
+                return $member->status === "EXTENSIONISTS";
+            }))->map(function ($member) {
+                return $member->employee;
+            }),
+            "budgets" => $proposal_study->proposal->budgets,
+            "submitted_date" => ($submitted_date->day . " " . $submitted_date->locale('ID')->getTranslatedMonthName() . " " . $submitted_date->year),
+            "submitted_time" => ($submitted_date->hour . ":" . ($submitted_date->minute < 10 ? ("0" . $submitted_date->minute) : $submitted_date->minute)),
+            "comments" => $proposal_study->proposal->comments,
+            "file" => $proposal_study->proposal->file,
+            "status" => $proposal_study->proposal->status,
+        ];
+
+        if ($proposal_study->proposal->approved_date) {
+            $approved_date = new Carbon($proposal_study->proposal->approved_date);
+            $proposal["approved_date"] = $approved_date->day . " " . $approved_date->getTranslatedMonthName() . " " . $approved_date->year;
+            $proposal["approved_time"] = $approved_date->hour . ":" . ($approved_date->minute < 10 ? ("0" . $approved_date->minute) : $approved_date->minute);
+        }
+
         return view('dashboard.study.proposal.show', [
-            'proposal' =>  (object)[
-                "study_id" => $proposal_study->id,
-                "title" => $proposal_study->research->title,
-                "head" => $proposal_study->members->filter(function ($member) {
-                    return $member->status === "HEAD";
-                })->first()->employee,
-                "study_member" => ($proposal_study->members->filter(function ($member) {
-                    return $member->status === "RESEARCHER";
-                }))->map(function ($member) {
-                    return $member->employee;
-                }),
-                "extensionists_member" => ($proposal_study->members->filter(function ($member) {
-                    return $member->status === "EXTENSIONISTS";
-                }))->map(function ($member) {
-                    return $member->employee;
-                }),
-                "submitted_date" => ($submitted_date->day . " " . $submitted_date->locale('ID')->getTranslatedMonthName() . " " . $submitted_date->year),
-                "comments" => $proposal_study->proposal->comments,
-                "file" => $proposal_study->proposal->file,
-                "status" => $proposal_study->proposal->status,
-            ],
+            'page' => 'proposal-study',
+            'proposal' =>  (object)$proposal,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Study  $study
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Study $proposal_study)
     {
         $head = $proposal_study->members->filter(function ($member) {
             return $member->status === "HEAD";
         })->first()->employee;
         return view('dashboard.study.proposal.edit', [
+            'page' => 'proposal-study',
             'proposal' =>  (object)[
                 "study_id" => $proposal_study->id,
                 "research_id" => $proposal_study->research->id,
                 "head" => $head,
                 "study_member" => $proposal_study->members->filter(function ($member) {
                     return $member->status === "RESEARCHER";
+                })->map(function ($member) {
+                    return $member->employee_id;
                 }),
                 "extensionists_member" => $proposal_study->members->filter(function ($member) {
                     return $member->status === "EXTENSIONISTS";
+                })->map(function ($member) {
+                    return $member->employee_id;
                 }),
+                "budgets" => $proposal_study->proposal->budgets,
                 "file" => $proposal_study->proposal->file
             ],
             'employees' => Employee::where('nip', '!=', $head->nip)->where('status', 'INTERNAL')->orderBy('name')->get()->filter(function ($employee) {
@@ -194,20 +207,20 @@ class ProposalStudyController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Study  $study
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Study $proposal_study)
     {
         $validatedData = $request->validate([
             'research_id' => 'required',
-            'research_member' => 'required',
-            'extensionists_member' => 'required',
+            'research_member' => 'required|array',
+            'extensionists_member' => 'required|array',
+            'name' => 'required|array',
+            'cost' => 'required|array',
+            'proposal' => 'mimes:pdf|max:2048',
+        ], [
+            "proposal.mimes" => "File Proposal harus bertipe .pdf",
+            "proposal.max" => "File Proposal tidak boleh lebih dari 2MB",
         ]);
+
 
         $proposalData = [
             "submitted_date" => Carbon::now(),
@@ -228,6 +241,19 @@ class ProposalStudyController extends Controller
             "research_id" => $validatedData['research_id'],
         ]);
 
+        Budget::where('proposal_id', $proposal_study->proposal->id)->delete();
+        foreach ($validatedData['name'] as $index => $name) {
+            if (($index + 1) != count($validatedData['name'])) {
+                if (!is_null($validatedData['name'][$index]) && !is_null($validatedData['cost'][$index])) {
+                    Budget::create([
+                        "proposal_id" => $proposal_study->proposal->id,
+                        "name" => $validatedData['name'][$index],
+                        "cost" => $validatedData['cost'][$index],
+                    ]);
+                }
+            }
+        }
+
         StudyMember::where('study_id', $proposal_study->id)->where('status', '!=', 'HEAD')->delete();
         foreach ($validatedData['research_member'] as $research_member) {
             StudyMember::create([
@@ -244,29 +270,26 @@ class ProposalStudyController extends Controller
                 'status' => 'EXTENSIONISTS'
             ]);
         }
-        return redirect('/proposal-study');
+        return redirect('/proposal-study')->with('updated', $proposal_study->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Study  $study
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Study $proposal_study)
     {
+        Budget::where('proposal_id', $proposal_study->proposal->id)->delete();
         StudyMember::where('study_id', $proposal_study->id)->delete();
         Study::destroy($proposal_study->id);
         if ($proposal_study->proposal->file) Storage::delete($proposal_study->proposal->file);
         Proposal::where('id', $proposal_study->proposal_id)->delete();
-        return redirect('/proposal-study');
+        return redirect('/proposal-study')->with('deleted', $proposal_study->research->title);
     }
 
     public function approve(Request $request, Study $proposal_study)
     {
         $validatedData = $request->validate([
             'submit' => 'string',
-            'comments' => 'string|required'
+            'comments' => 'required'
+        ], [
+            'comments.required' => "Keterangan perlu di-isi"
         ]);
 
         $approvStatus = "APPROVED";
@@ -283,6 +306,172 @@ class ProposalStudyController extends Controller
         ];
 
         Proposal::where('id', $proposal_study->proposal_id)->update($proposalData);
-        return redirect('/proposal-study');
+        return redirect('/proposal-study')->with($validatedData['status'], $proposal_study->research->title);
+    }
+
+    public function report(Request $request)
+    {
+        if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
+            $proposals = Study::latest()->get()->map(function ($research) {
+                if ($research->proposal->status === "SUBMITTED")
+                    $status = "Pengajuan";
+                elseif ($research->proposal->status === "APPROVED")
+                    $status = "Disetujui";
+                elseif ($research->proposal->status === "REJECTED")
+                    $status = "Ditolak";
+                elseif ($research->proposal->status === "WAITING")
+                    $status = "Menunggu Pendanaan";
+
+                $submitted_date = new Carbon($research->proposal->submitted_date);
+
+                $data = [
+                    "title" => $research->title,
+                    "head" => $research->members->filter(function ($member) {
+                        return $member->status === "HEAD";
+                    })->first()->employee,
+                    "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                    "status" => $status,
+                ];
+
+                if ($research->proposal->approved_date) {
+                    $approved_date = new Carbon();
+
+                    $data = array_merge($data, [
+                        "reviewer" => $research->proposal->employee,
+                        "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                    ]);
+                } else {
+                    $data = array_merge($data, [
+                        "reviewer" => "Masih Ditinjau",
+                        "approved_duration" => "Masih Ditinjau",
+                    ]);
+                }
+
+                return (object)$data;
+            });
+
+            return view('dashboard.study.proposal.report', [
+                'proposals' => $proposals
+            ]);
+        } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
+            if ($request->get('status') === "SUBMITTED") {
+                $status['ID'] = "Pengajuan";
+                $status['DB'] = "SUBMITTED";
+            } else if ($request->get('status') === "WAITING") {
+                $status['ID'] = "Menunggu Pendanaan";
+                $status['DB'] = "WAITING";
+            } else if ($request->get('status') === "APPROVED") {
+                $status['ID'] = "Disetujui";
+                $status['DB'] = "APPROVED";
+            } else if ($request->get('status') === "REJECTED") {
+                $status['ID'] = "Ditolak";
+                $status['DB'] = "REJECTED";
+            } else {
+                $status['ID'] = "Semua";
+                $status['DB'] = "";
+            }
+            if (!empty($request->get('from')) && !empty($request->get('to'))) {
+                $proposals =
+                    Study::whereBetween('submitted_date', [$request->get('from'), $request->get('to')])
+                    ->whereHas('proposal', function ($query) use ($status) {
+                        $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                    })
+                    ->get()
+                    ->map(function ($research) {
+                        if ($research->proposal->status === "SUBMITTED")
+                            $status = "Pengajuan";
+                        elseif ($research->proposal->status === "APPROVED")
+                            $status = "Disetujui";
+                        elseif ($research->proposal->status === "REJECTED")
+                            $status = "Ditolak";
+                        elseif ($research->proposal->status === "WAITING")
+                            $status = "Menunggu Pendanaan";
+
+                        $submitted_date = new Carbon($research->proposal->submitted_date);
+
+                        $data = [
+                            "title" => $research->title,
+                            "head" => $research->members->filter(function ($member) {
+                                return $member->status === "HEAD";
+                            })->first()->employee,
+                            "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                            "status" => $status,
+                        ];
+
+                        if ($research->proposal->approved_date) {
+                            $approved_date = new Carbon();
+
+                            $data = array_merge($data, [
+                                "reviewer" => $research->proposal->employee,
+                                "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                            ]);
+                        } else {
+                            $data = array_merge($data, [
+                                "reviewer" => "Masih Ditinjau",
+                                "approved_duration" => "Masih Ditinjau",
+                            ]);
+                        }
+
+                        return (object)$data;
+                    });
+            } else {
+                $proposals =
+                    Study::whereHas('proposal', function ($query) use ($status) {
+                        $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                    })->latest()->get()->map(function ($research) {
+                        if ($research->proposal->status === "SUBMITTED")
+                            $status = "Pengajuan";
+                        elseif ($research->proposal->status === "APPROVED")
+                            $status = "Disetujui";
+                        elseif ($research->proposal->status === "REJECTED")
+                            $status = "Ditolak";
+                        elseif ($research->proposal->status === "WAITING")
+                            $status = "Menunggu Pendanaan";
+
+                        $submitted_date = new Carbon($research->proposal->submitted_date);
+
+                        $data = [
+                            "title" => $research->title,
+                            "head" => $research->members->filter(function ($member) {
+                                return $member->status === "HEAD";
+                            })->first()->employee,
+                            "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                            "status" => $status,
+                        ];
+
+                        if ($research->proposal->approved_date) {
+                            $approved_date = new Carbon();
+
+                            $data = array_merge($data, [
+                                "reviewer" => $research->proposal->employee,
+                                "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                            ]);
+                        } else {
+                            $data = array_merge($data, [
+                                "reviewer" => "Masih Ditinjau",
+                                "approved_duration" => "Masih Ditinjau",
+                            ]);
+                        }
+
+                        return (object)$data;
+                    });
+            }
+
+            if ($request->get('submit') === 'filter') {
+                return view('dashboard.study.proposal.report', [
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'status' => $status['ID'],
+                    'proposals' => $proposals
+                ]);
+            } elseif ($request->get('submit') === 'print') {
+                return view('dashboard.study.proposal.print', [
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'status' => $status['ID'],
+                    'proposals' => $proposals
+                ]);
+            }
+        }
     }
 }

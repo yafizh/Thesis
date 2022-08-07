@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->nullable();
             $table->string('file');
-            $table->timestamp('submitted_date')->nullable();
+            $table->timestamp('submitted_date');
+            $table->timestamp('waiting_date')->nullable();
             $table->timestamp('approved_date')->nullable();
             $table->string('status');
             $table->text('comments')->nullable();

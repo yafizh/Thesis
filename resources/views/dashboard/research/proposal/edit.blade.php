@@ -36,6 +36,37 @@
                                         placeholder="Masukkan Judul Penelitian..."
                                         value="{{ old('title', $proposal->title) }}" required>
                                 </div>
+                                <h6>Anggaran</h6>
+                                <div id="budged" class="row">
+                                    @foreach ($proposal->budgets as $budget)
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Keperluan</label>
+                                                <input type="text" name="name[]" class="form-control"
+                                                    oninput="addField()" value="{{ $budget->name }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Anggaran</label>
+                                                <input type="text" name="cost[]" class="form-control"
+                                                    oninput="addField()" value="{{ $budget->cost }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Keperluan</label>
+                                            <input type="text" name="name[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Anggaran</label>
+                                            <input type="text" name="cost[]" class="form-control" oninput="addField()" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label">Anggota Penelitian</label>
                                     <select id="research_member" name="research_member[]" multiple
@@ -51,19 +82,49 @@
                                     <div class="custom-file">
                                         <input type="file" name="proposal" class="custom-file-input"
                                             onchange="preview(this)" accept=".pdf">
-                                        <label class="custom-file-label">Pilih File Proposal</label>
+                                        <label class="custom-file-label">Pilih file baru untuk memperbaharui Proposal</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <script>
+                        const addField = () => {
+                            var container = document.getElementById("budged");
+                            let x = true;
+                            const input1 = document.querySelectorAll("input[name='name[]']");
+                            const input2 = document.querySelectorAll("input[name='cost[]']");
+                            const input3 = [...input1, ...input2];
+                            input3.forEach((elm) => {
+                                if (!(elm.value).trim()) x = false;
+                            });
+
+                            if (x) {
+                                container.insertAdjacentHTML("beforeend", `
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Keperluan</label>
+                                            <input type="text" name="name[]" class="form-control" oninput="addField()">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Anggaran</label>
+                                            <input type="text" name="cost[]" class="form-control" oninput="addField()">
+                                        </div>
+                                    </div>
+                                `.trim());
+                            }
+                        }
+                    </script>
+                    <div class="tile-footer d-flex justify-content-between">
                         <a class="btn btn-secondary" href="{{ url()->previous() }}">
                             <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
                             Kembali
                         </a>
                         &nbsp;&nbsp;&nbsp;
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary" type="submit"
+                            onclick="return confirm('Yakin ingin memperbaharui pengajuan proposal?')">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Simpan
                         </button>
@@ -122,9 +183,10 @@
                 },
             },
         });
-        @foreach ($proposal->research_member as $employee)
-            research_member.addItem('{{ $employee->employee_id }}');
+        @foreach (old('research_member', $proposal->research_member) as $employee)
+            research_member.addItem('{{ $employee }}');
         @endforeach
+
 
         const extensionists_member = new TomSelect("#extensionists_member", {
             valueField: "id",
@@ -147,8 +209,8 @@
                 },
             },
         });
-        @foreach ($proposal->extensionists_member as $employee)
-            extensionists_member.addItem('{{ $employee->employee_id }}');
+        @foreach (old('extensionists_member', $proposal->extensionists_member) as $employee)
+            extensionists_member.addItem('{{ $employee }}');
         @endforeach
     </script>
 @endsection

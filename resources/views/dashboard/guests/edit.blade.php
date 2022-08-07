@@ -26,13 +26,13 @@
                                             <label class="control-label">NIK</label>
                                             <input class="form-control" type="text" name="nik"
                                                 placeholder="Masukkan NIP" autocomplete="off"
-                                                value="{{ old('nik', $guest->nik) }}">
+                                                value="{{ old('nik', $guest->nik) }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Nama</label>
                                             <input class="form-control" type="text" name="name"
                                                 placeholder="Masukkan Nama" autocomplete="off"
-                                                value="{{ old('name', $guest->name) }}">
+                                                value="{{ old('name', $guest->name) }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Jenis Kelamin</label>
@@ -40,7 +40,7 @@
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="1"
                                                         name="sex"
-                                                        {{ old('sex', $guest->sex) == '1' ? 'checked' : '' }}>Laki -
+                                                        {{ old('sex', $guest->sex) == '1' ? 'checked' : '' }} required>Laki -
                                                     Laki
                                                 </label>
                                             </div>
@@ -48,7 +48,7 @@
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="0"
                                                         name="sex"
-                                                        {{ old('sex', $guest->sex) == '0' ? 'checked' : '' }}>Perempuan
+                                                        {{ old('sex', $guest->sex) == '0' ? 'checked' : '' }} required>Perempuan
                                                 </label>
                                             </div>
                                         </div>
@@ -56,7 +56,7 @@
                                             <label class="control-label">Nomor Telepon</label>
                                             <input class="form-control" type="text" name="phone_number"
                                                 placeholder="Masukkan Nomor Telepon" autocomplete="off"
-                                                value="{{ old('phone_number', $guest->phone_number) }}">
+                                                value="{{ old('phone_number', $guest->phone_number) }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Pegawai yang dikunjungi</label>
@@ -82,13 +82,13 @@
                                             <label class="control-label">Instansi</label>
                                             <input class="form-control" type="text" name="agency"
                                                 placeholder="Asal Instansi" autocomplete="off"
-                                                value="{{ old('agency', $guest->agency) }}">
+                                                value="{{ old('agency', $guest->agency) }}" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Keperluan</label>
                                             <input class="form-control" type="text" name="necessity"
                                                 placeholder="Keperluan" autocomplete="off"
-                                                value="{{ old('necessity', $guest->necessity) }}">
+                                                value="{{ old('necessity', $guest->necessity) }}" required>
                                         </div>
                                     </div>
                                 </div>

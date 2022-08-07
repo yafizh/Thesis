@@ -26,6 +26,8 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Tanggal Kunjungan</th>
                                     <th class="text-center">NIK</th>
                                     <th class="text-center">Nama</th>
                                     <th class="text-center">Nomor Telepon</th>
@@ -37,16 +39,17 @@
                             <tbody>
                                 @foreach ($guests as $guest)
                                     <tr>
-                                        <td style="vertical-align: middle;" class="text-center">{{ $guest->nik }}</td>
-                                        <td style="vertical-align: middle;" class="">{{ $guest->name }}</td>
-                                        <td style="vertical-align: middle;" class="text-center">{{ $guest->phone_number }}
+                                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                                        <td class="text-center align-middle">{{ $guest->visit_date }}</td>
+                                        <td class="text-center align-middle">{{ $guest->nik }}</td>
+                                        <td class="align-middle">{{ $guest->name }}</td>
+                                        <td class="text-center align-middle">{{ $guest->phone_number }}
                                         </td>
-                                        <td style="vertical-align: middle;" class="text-center">{{ $guest->agency }}</td>
-                                        <td style="vertical-align: middle;" class="text-center">
-                                            {{ $guest->employee->name }}</td>
+                                        <td class="text-center align-middle">{{ $guest->agency }}</td>
+                                        <td class="text-center align-middle">{{ $guest->employee->name }}</td>
                                         <td>
-                                            <a href="" class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"
-                                                    aria-hidden="true"></i></a>
+                                            {{-- <a href="/guests/{{ $guest->id }}" class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"
+                                                    aria-hidden="true"></i></a> --}}
                                             <a href="/guests/{{ $guest->id }}/edit" class="btn btn-warning btn-sm"><i
                                                     class="m-0 fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                             <form action="/guests/{{ $guest->id }}" method="POST" class="d-inline">

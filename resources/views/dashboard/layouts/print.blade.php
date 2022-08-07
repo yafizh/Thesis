@@ -23,7 +23,19 @@
         <div style="width: 100%; border-top: 3px solid black;"></div>
     </div>
     @yield('content')
-    <footer></footer>
+    <footer class="d-flex justify-content-end">
+        <?php
+        $submitted_date = new \Carbon\Carbon();
+
+        ?>
+        <div class="text-center">
+            <h6>Banjarbaru,
+                {{ $submitted_date->day . ' ' . $submitted_date->locale('ID')->getTranslatedMonthName() . ' ' . $submitted_date->year }}
+            </h6>
+            <br><br><br><br><br>
+            <h6>ADMIN</h6>
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous">
     </script>

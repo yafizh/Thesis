@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('proposal_id');
             $table->foreignId('report_id')->nullable();
             $table->string('title');
+            $table->string('status_budget')->nullable();
             $table->timestamps();
         });
     }
