@@ -168,6 +168,7 @@ class StudyController extends Controller
             });
 
             return view('dashboard.study.report', [
+                'page' => 'study_report',
                 'studies' => $studies
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -295,6 +296,7 @@ class StudyController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.study.report', [
+                    'page' => 'study_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'status' => $status['ID'],
@@ -331,6 +333,7 @@ class StudyController extends Controller
         });
         if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
             return view('dashboard.study.report_member', [
+                'page' => 'study_member_report',
                 'members' => $members
             ]);
         } elseif ($request->get('submit') === 'print') {

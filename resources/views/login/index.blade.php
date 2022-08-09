@@ -21,11 +21,14 @@
         <div class="login-box">
             <form class="login-form" action="/login" method="POST">
                 @csrf
-                <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+                <div class="d-flex justify-content-center pb-3">
+                    <img src="/images/logo.png" width="100" alt="">
+                </div>
+                <h3 class="login-head">BALAI PENGKAJIAN TEKNOLOGI PERTANIAN KALIMANTAN SELATAN</h3>
                 @if (session()->has('auth'))
                     <div class="alert alert-dismissible alert-danger">
-                        NIP atau Password Salah!
                         <button class="close" type="button" data-dismiss="alert">×</button>
+                        NIP atau Password Salah!
                     </div>
                 @endif
                 <div class="form-group">
@@ -44,6 +47,8 @@
             </form>
         </div>
     </section>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>

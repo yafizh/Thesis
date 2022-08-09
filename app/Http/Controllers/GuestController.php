@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Guest;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -17,6 +16,7 @@ class GuestController extends Controller
             return $guest;
         });
         return view('dashboard.guests.index', [
+            "page" => "guests",
             "guests" => $guests
         ]);
     }
@@ -24,6 +24,7 @@ class GuestController extends Controller
     public function create()
     {
         return view('dashboard.guests.create', [
+            "page" => "guest-book",
             'employees' => Employee::all(),
             'DAY_IN_INDONESIA' => ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
         ]);
@@ -44,14 +45,15 @@ class GuestController extends Controller
 
         $validatedData['user_id'] = auth()->user()->id;
 
-        Guest::create($validatedData);
+        $id = Guest::create($validatedData)->id;
 
-        return redirect('/guests');
+        return redirect("/guests/$id");
     }
 
     public function show(Guest $guest)
     {
         return view('dashboard.guests.show', [
+            "page" => "guests",
             "guest" => $guest,
             "employees" => Employee::all(),
             'DAY_IN_INDONESIA' => ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
@@ -61,6 +63,7 @@ class GuestController extends Controller
     public function edit(Guest $guest)
     {
         return view('dashboard.guests.edit', [
+            "page" => "guest-book",
             "guest" => $guest,
             "employees" => Employee::all(),
             'DAY_IN_INDONESIA' => ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
@@ -82,13 +85,13 @@ class GuestController extends Controller
 
         Guest::where('id', $guest->id)->update($validatedData);
 
-        return redirect('/guests');
+        return redirect('/guests')->with('updated', $guest->id);
     }
 
     public function destroy(Guest $guest)
     {
         Guest::destroy($guest->id);
-        return redirect('/guests');
+        return redirect('/guests')->with('deleted', $guest->name);
     }
 
     public function report(Request $request)
@@ -104,6 +107,7 @@ class GuestController extends Controller
                 ];
             });
             return view('dashboard.guests.report', [
+                'page' => 'guest_report',
                 'guests' => $guests
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -130,6 +134,7 @@ class GuestController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.guests.report', [
+                    'page' => 'guest_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'guests' => $guests

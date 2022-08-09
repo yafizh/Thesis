@@ -39,16 +39,16 @@
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="1"
-                                                        name="sex"
-                                                        {{ old('sex', $guest->sex) == '1' ? 'checked' : '' }} required>Laki -
+                                                        name="sex" {{ old('sex', $guest->sex) == '1' ? 'checked' : '' }}
+                                                        required>Laki -
                                                     Laki
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="0"
-                                                        name="sex"
-                                                        {{ old('sex', $guest->sex) == '0' ? 'checked' : '' }} required>Perempuan
+                                                        name="sex" {{ old('sex', $guest->sex) == '0' ? 'checked' : '' }}
+                                                        required>Perempuan
                                                 </label>
                                             </div>
                                         </div>
@@ -67,16 +67,18 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">Hari</label>
-                                            <input class="form-control" type="text" value="{{ $DAY_IN_INDONESIA[$guest->created_at->format('w')] }}" disabled>
+                                            <input class="form-control" type="text"
+                                                value="{{ $DAY_IN_INDONESIA[$guest->created_at->format('w')] }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Tanggal</label>
-                                            <input class="form-control" type="date" value="{{ $guest->created_at->toDateString() }}"
-                                                disabled>
+                                            <input class="form-control" type="date"
+                                                value="{{ $guest->created_at->toDateString() }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Jam</label>
-                                            <input class="form-control" type="time" value="{{ $guest->created_at->toTimeString() }}" disabled>
+                                            <input class="form-control" type="time"
+                                                value="{{ $guest->created_at->toTimeString() }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Instansi</label>
@@ -98,19 +100,26 @@
                                     <label class="control-label d-block">Gambar</label>
                                     <div class="image mb-3 d-flex justify-content-center">
                                         <video autoplay class="border d-none" style="width:315px; height: 315px;"></video>
-                                        <img src="{{ old('image', $guest->image) }}" class="border" style="width:315px; height: 315px;">
-                                        <input type="text" class="d-none" value="{{ old('image', $guest->image) }}" name="image">
+                                        <img src="{{ old('image', $guest->image) }}" class="border"
+                                            style="width:315px; height: 315px;">
+                                        <input type="text" class="d-none" value="{{ old('image', $guest->image) }}"
+                                            name="image">
                                     </div>
                                     <div class="actions">
                                         <button type="button" class="btn btn-success btn-sm mr-2">AMBIL
                                             ULANG</button>
-                                        <button type="button" class="btn btn-success btn-sm ml-2" disabled>AMBIL GAMBAR</button>
+                                        <button type="button" class="btn btn-success btn-sm ml-2" disabled>AMBIL
+                                            GAMBAR</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <div class="tile-footer d-flex justify-content-between">
+                        <a class="btn btn-secondary" href="{{ url()->previous() }}">
+                            <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
+                            Kembali
+                        </a>
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Simpan

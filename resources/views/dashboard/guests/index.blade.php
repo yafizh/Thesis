@@ -12,13 +12,28 @@
             <li class="breadcrumb-item active"><a href="#">Data Pengunjung</a></li>
         </ul>
     </div>
-    <style>
-        tr td:last-child {
-            width: 1%;
-            white-space: nowrap;
-        }
-    </style>
     <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between">
+                @if (session()->has('updated'))
+                    <div class="alert alert-success flex-grow-1">
+                        Berhasil Memperbaharui Data Pengunjung!
+                        <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ session()->get('updated') }}"
+                            class="alert-link">
+                            Lihat
+                        </a>
+                    </div>
+                @elseif (session()->has('deleted'))
+                    <div class="alert alert-success flex-grow-1">
+                        Berhasil Menghapus Data Pengunjung dengan nama: <strong>{{ session()->get('deleted') }}</strong>!
+                    </div>
+                @else
+                    <div class="alert alert-info flex-grow-1">
+                        Klik Tombol <strong>Detail</strong> Untuk Memperbaharui atau Menghapus Data Pengunjung!
+                    </div>
+                @endif
+            </div>
+        </div>
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">
@@ -26,20 +41,20 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center">No</th>
+                                    <th class="text-center td-fit">No</th>
                                     <th class="text-center">Tanggal Kunjungan</th>
                                     <th class="text-center">NIK</th>
                                     <th class="text-center">Nama</th>
                                     <th class="text-center">Nomor Telepon</th>
                                     <th class="text-center">Instansi</th>
                                     <th class="text-center">Mengunjungi</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th class="text-center td-fit">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($guests as $guest)
                                     <tr>
-                                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                                        <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
                                         <td class="text-center align-middle">{{ $guest->visit_date }}</td>
                                         <td class="text-center align-middle">{{ $guest->nik }}</td>
                                         <td class="align-middle">{{ $guest->name }}</td>
@@ -47,18 +62,9 @@
                                         </td>
                                         <td class="text-center align-middle">{{ $guest->agency }}</td>
                                         <td class="text-center align-middle">{{ $guest->employee->name }}</td>
-                                        <td>
-                                            {{-- <a href="/guests/{{ $guest->id }}" class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"
-                                                    aria-hidden="true"></i></a> --}}
-                                            <a href="/guests/{{ $guest->id }}/edit" class="btn btn-warning btn-sm"><i
-                                                    class="m-0 fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <form action="/guests/{{ $guest->id }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button onclick="return confirm('Yakin?')" type="submit"
-                                                    class="btn btn-danger btn-sm"><i class="m-0 fa fa-trash-o"
-                                                        aria-hidden="true"></i></button>
-                                            </form>
+                                        <td class="td-fit">
+                                            <a href="/guests/{{ $guest->id }}" class="btn btn-info btn-sm"><i
+                                                    class="m-0 fa fa-eye" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

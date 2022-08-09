@@ -1,7 +1,7 @@
 @extends('dashboard.layouts.print')
 
 @section('content')
-    <h4 class="text-center my-3">Laporan Proposal Pengkajian</h4>
+    <h4 class="text-center my-3">Laporan Proposal Penelitian</h4>
     <section class="mb-3">
         <strong>
             <span style="width: 150px; display: inline-block;">Filter Tanggal</span>

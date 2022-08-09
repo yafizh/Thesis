@@ -30,21 +30,24 @@
                                         <div class="form-group">
                                             <label class="control-label">Nama</label>
                                             <input class="form-control" type="text" name="name"
-                                                placeholder="Masukkan Nama" autocomplete="off" value="{{ old('name') }}" required>
+                                                placeholder="Masukkan Nama" autocomplete="off" value="{{ old('name') }}"
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Jenis Kelamin</label>
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="1"
-                                                        name="sex" {{ old('sex') == '1' ? 'checked' : '' }} required>Laki -
+                                                        name="sex" {{ old('sex') == '1' ? 'checked' : '' }}
+                                                        required>Laki -
                                                     Laki
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input class="form-check-input" type="radio" value="0"
-                                                        name="sex" {{ old('sex') == '0' ? 'checked' : '' }} required>Perempuan
+                                                        name="sex" {{ old('sex') == '0' ? 'checked' : '' }}
+                                                        required>Perempuan
                                                 </label>
                                             </div>
                                         </div>
@@ -68,8 +71,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Tanggal</label>
-                                            <input class="form-control" type="date" value="{{ Date('Y-m-d') }}"
-                                                disabled>
+                                            <input class="form-control" type="date" value="{{ Date('Y-m-d') }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Jam</label>
@@ -78,12 +80,14 @@
                                         <div class="form-group">
                                             <label class="control-label">Instansi</label>
                                             <input class="form-control" type="text" name="agency"
-                                                placeholder="Asal Instansi" autocomplete="off" value="{{ old('agency') }}" required>
+                                                placeholder="Asal Instansi" autocomplete="off" value="{{ old('agency') }}"
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Keperluan</label>
                                             <input class="form-control" type="text" name="necessity"
-                                                placeholder="Keperluan" autocomplete="off" value="{{ old('necessity') }}" required>
+                                                placeholder="Keperluan" autocomplete="off" value="{{ old('necessity') }}"
+                                                required>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +111,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer d-flex justify-content-end">
+                    <div class="tile-footer d-flex justify-content-between">
+                        <a class="btn btn-secondary" href="{{ url()->previous() }}">
+                            <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
+                            Kembali
+                        </a>
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>
                             Tambah

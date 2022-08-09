@@ -345,6 +345,7 @@ class ProposalResearchController extends Controller
             });
 
             return view('dashboard.research.proposal.report', [
+                'page' => 'proposal_research_report',
                 'proposals' => $proposals
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -365,10 +366,11 @@ class ProposalResearchController extends Controller
                 $status['DB'] = "";
             }
             if (!empty($request->get('from')) && !empty($request->get('to'))) {
+                $from = $request->get('from');
+                $to = $request->get('to');
                 $proposals =
-                    Research::whereBetween('submitted_date', [$request->get('from'), $request->get('to')])
-                    ->whereHas('proposal', function ($query) use ($status) {
-                        $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                    Research::whereHas('proposal', function ($query) use ($from, $to, $status) {
+                        $query->whereBetween('submitted_date', [$from, $to])->where("status", 'LIKE', '%' . $status['DB'] . '%');
                     })
                     ->get()
                     ->map(function ($research) {
@@ -453,6 +455,7 @@ class ProposalResearchController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.research.proposal.report', [
+                    'page' => 'proposal_research_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'status' => $status['ID'],

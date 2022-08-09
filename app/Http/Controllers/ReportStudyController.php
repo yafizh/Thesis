@@ -202,4 +202,167 @@ class ReportStudyController extends Controller
         Report::where('id', $report_study->report_id)->update($reportData);
         return redirect('/report-study')->with($validatedData['status'], $report_study->research->title);
     }
+
+    public function report(Request $request)
+    {
+
+        if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
+            $reports = Study::latest()->get()->filter(function ($study) {
+                return !is_null($study->report);
+            });
+            $reports = $reports->map(function ($study) {
+                if ($study->report->status === "SUBMITTED")
+                    $status = "Pengajuan";
+                elseif ($study->report->status === "APPROVED")
+                    $status = "Disetujui";
+                elseif ($study->report->status === "REJECTED")
+                    $status = "Ditolak";
+
+                $submitted_date = new Carbon($study->report->submitted_date);
+
+                $data = [
+                    "title" => $study->research->title,
+                    "head" => $study->members->filter(function ($member) {
+                        return $member->status === "HEAD";
+                    })->first()->employee,
+                    "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                    "status" => $status,
+                ];
+
+                if ($study->report->approved_date) {
+                    $approved_date = new Carbon();
+
+                    $data = array_merge($data, [
+                        "reviewer" => $study->report->employee,
+                        "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                    ]);
+                } else {
+                    $data = array_merge($data, [
+                        "reviewer" => "Masih Ditinjau",
+                        "approved_duration" => "Masih Ditinjau",
+                    ]);
+                }
+
+                return (object)$data;
+            });
+            return view('dashboard.study.report.report', [
+                'page' => 'report_study_report',
+                'reports' => $reports
+            ]);
+        } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
+            if ($request->get('status') === "SUBMITTED") {
+                $status['ID'] = "Pengajuan";
+                $status['DB'] = "SUBMITTED";
+            } else if ($request->get('status') === "APPROVED") {
+                $status['ID'] = "Disetujui";
+                $status['DB'] = "APPROVED";
+            } else if ($request->get('status') === "REJECTED") {
+                $status['ID'] = "Ditolak";
+                $status['DB'] = "REJECTED";
+            } else {
+                $status['ID'] = "Semua";
+                $status['DB'] = "";
+            }
+            if (!empty($request->get('from')) && !empty($request->get('to'))) {
+                $from = $request->get('from');
+                $to = $request->get('to');
+                $studies =  Study::whereHas('report', function ($query) use ($from, $to, $status) {
+                    $query->whereBetween('submitted_date', [$from, $to])->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                })->get()->filter(function ($study) {
+                    return !is_null($study->report);
+                });
+                $reports = $studies->map(function ($study) {
+                    if ($study->report->status === "SUBMITTED")
+                        $status = "Pengajuan";
+                    elseif ($study->report->status === "APPROVED")
+                        $status = "Disetujui";
+                    elseif ($study->report->status === "REJECTED")
+                        $status = "Ditolak";
+
+                    $submitted_date = new Carbon($study->report->submitted_date);
+
+                    $data = [
+                        "title" => $study->research->title,
+                        "head" => $study->members->filter(function ($member) {
+                            return $member->status === "HEAD";
+                        })->first()->employee,
+                        "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                        "status" => $status,
+                    ];
+
+                    if ($study->report->approved_date) {
+                        $approved_date = new Carbon();
+
+                        $data = array_merge($data, [
+                            "reviewer" => $study->report->employee,
+                            "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                        ]);
+                    } else {
+                        $data = array_merge($data, [
+                            "reviewer" => "Masih Ditinjau",
+                            "approved_duration" => "Masih Ditinjau",
+                        ]);
+                    }
+
+                    return (object)$data;
+                });
+            } else {
+                $studies = Study::whereHas('report', function ($query) use ($status) {
+                    $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                })->latest()->get();
+                $reports = $studies->map(function ($study) {
+                    if ($study->report->status === "SUBMITTED")
+                        $status = "Pengajuan";
+                    elseif ($study->report->status === "APPROVED")
+                        $status = "Disetujui";
+                    elseif ($study->report->status === "REJECTED")
+                        $status = "Ditolak";
+
+                    $submitted_date = new Carbon($study->report->submitted_date);
+
+                    $data = [
+                        "title" => $study->research->title,
+                        "head" => $study->members->filter(function ($member) {
+                            return $member->status === "HEAD";
+                        })->first()->employee,
+                        "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
+                        "status" => $status,
+                    ];
+
+                    if ($study->report->approved_date) {
+                        $approved_date = new Carbon();
+
+                        $data = array_merge($data, [
+                            "reviewer" => $study->report->employee,
+                            "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
+                        ]);
+                    } else {
+                        $data = array_merge($data, [
+                            "reviewer" => "Masih Ditinjau",
+                            "approved_duration" => "Masih Ditinjau",
+                        ]);
+                    }
+
+                    return (object)$data;
+                });
+            }
+
+            if ($request->get('submit') === 'filter') {
+                return view('dashboard.study.report.report', [
+                    'page' => 'report_study_report',
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'status' => $status['ID'],
+                    'reports' => $reports
+                ]);
+            } elseif ($request->get('submit') === 'print') {
+                return view('dashboard.study.report.print', [
+                    'from' => $request->get('from') ?? '',
+                    'to' => $request->get('to') ?? '',
+                    'status' => $status['ID'],
+                    'reports' => $reports
+                ]);
+            }
+        }
+    }
 }

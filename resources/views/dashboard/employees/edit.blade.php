@@ -39,9 +39,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Nomor Telepon</label>
-                                    <input class="form-control" type="text" name="phone_number"
-                                        placeholder="Masukkan Nomor Telepon" autocomplete="off"
+                                    <input class="form-control @error('phone_number') is-invalid @enderror" type="text"
+                                        name="phone_number" placeholder="Masukkan Nomor Telepon" autocomplete="off"
                                         value="{{ old('phone_number', $employee->phone_number) }}" required>
+                                    @error('phone_number')
+                                        <div class="form-control-feedback text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Pendidikan Terakhir</label>
@@ -86,14 +89,14 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="sex" value="1"
-                                                {{ old('sex', $employee->sex) === 1 ? 'checked' : '' }} required>Laki -
+                                                {{ old('sex', $employee->sex) == 1 ? 'checked' : '' }} required>Laki -
                                             Laki
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="sex" value="0"
-                                                {{ old('sex', $employee->sex) === 0 ? 'checked' : '' }} required>Perempuan
+                                                {{ old('sex', $employee->sex) == 0 ? 'checked' : '' }} required>Perempuan
                                         </label>
                                     </div>
                                 </div>

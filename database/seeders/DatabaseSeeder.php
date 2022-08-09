@@ -4,12 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Employee;
 use App\Models\Guest;
-use App\Models\Proposal;
-use App\Models\Report;
-use App\Models\Research;
-use App\Models\ResearchMember;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

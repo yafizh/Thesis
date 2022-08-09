@@ -3,7 +3,7 @@
 @section('app-content')
     <div class="app-title">
         <div>
-            <h1><i class="fa fa-edit"></i> Buku Tamu</h1>
+            <h1><i class="fa fa-edit"></i> Detail Tamu</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -29,27 +29,21 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Jenis Kelamin</label>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="radio"
-                                                    {{ $guest->sex == '1' ? 'checked' : '' }} disabled>Laki -
-                                                Laki
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="form-check-input" type="radio"
-                                                    {{ $guest->sex == '0' ? 'checked' : '' }} disabled>Perempuan
-                                            </label>
-                                        </div>
+                                        @if ($guest->sex)
+                                            <input class="form-control" type="text" value="Laki - Laki" disabled>
+                                        @else
+                                            <input class="form-control" type="text" value="Perempuan" disabled>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Nomor Telepon</label>
-                                        <input class="form-control" type="text" value="{{ $guest->phone_number }}" disabled>
+                                        <input class="form-control" type="text" value="{{ $guest->phone_number }}"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Pegawai yang dikunjungi</label>
-                                        <input class="form-control" type="text" value="{{ $guest->employee->name }}" disabled>
+                                        <input class="form-control" type="text" value="{{ $guest->employee->name }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -70,14 +64,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Instansi</label>
-                                        <input class="form-control" type="text" name="agency"
-                                            placeholder="Asal Instansi" autocomplete="off"
-                                            value="{{ old('agency', $guest->agency) }}" required>
+                                        <input class="form-control" type="text" value="{{ $guest->agency }}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Keperluan</label>
-                                        <input class="form-control" type="text" name="necessity" placeholder="Keperluan"
-                                            autocomplete="off" value="{{ old('necessity', $guest->necessity) }}" required>
+                                        <input class="form-control" type="text" value="{{ $guest->necessity }}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -86,27 +77,27 @@
                             <div class="form-group text-center">
                                 <label class="control-label d-block">Gambar</label>
                                 <div class="image mb-3 d-flex justify-content-center">
-                                    <video autoplay class="border d-none" style="width:315px; height: 315px;"></video>
-                                    <img src="{{ $guest->image }}" class="border"
-                                        style="width:315px; height: 315px;">
-                                    <input type="text" class="d-none" value="{{ old('image', $guest->image) }}"
-                                        name="image">
-                                </div>
-                                <div class="actions">
-                                    <button type="button" class="btn btn-success btn-sm mr-2">AMBIL
-                                        ULANG</button>
-                                    <button type="button" class="btn btn-success btn-sm ml-2" disabled>AMBIL
-                                        GAMBAR</button>
+                                    <img src="{{ $guest->image }}" class="border" style="width:315px; height: 315px;">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tile-footer d-flex justify-content-end">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fa fa-fw fa-lg fa-check-circle"></i>
-                        Simpan
-                    </button>
+                <div class="tile-footer d-flex justify-content-between">
+                    <a class="btn btn-secondary" href="{{ url()->previous() }}">
+                        <i class="fa fa-wa fa-lg fa-arrow-circle-left"></i>
+                        Kembali
+                    </a>
+                    <div>
+                        <a href="/guests/{{ $guest->id }}/edit" class="btn btn-warning"><i
+                                class="fa fa-fw fa-lg fa-pencil-square-o"></i> Edit Pengunjung</a>
+                        <form action="/guests/{{ $guest->id }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button onclick="return confirm('Yakin?')" type="submit" class="btn btn-danger"><i
+                                    class="fa fa-fw fa-lg fa-trash-o"></i> Hapus Pengunjung</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

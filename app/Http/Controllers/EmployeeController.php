@@ -14,13 +14,16 @@ class EmployeeController extends Controller
     public function index()
     {
         return view('dashboard.employees.index', [
+            'page' => 'employees',
             'employees' => Employee::orderBy("name")->get()
         ]);
     }
 
     public function create()
     {
-        return view('dashboard.employees.create');
+        return view('dashboard.employees.create', [
+            'page' => 'employees',
+        ]);
     }
 
     public function store(Request $request)
@@ -85,6 +88,7 @@ class EmployeeController extends Controller
         $birth = new Carbon($employee->birth);
         $employee->birth = ($birth->day . " " . $birth->getTranslatedMonthName() . " " . $birth->year);
         return view('dashboard.employees.show', [
+            'page' => 'employees',
             'employee' => $employee
         ]);
     }
@@ -92,6 +96,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         return view('dashboard.employees.edit', [
+            'page' => 'employees',
             'employee' => $employee
         ]);
     }
@@ -175,7 +180,6 @@ class EmployeeController extends Controller
             "manage" => "required",
         ]);
 
-        // dd($validatedData['manage'] === "RESET");
         if ($validatedData['manage'] === "CHANGE")
             return $this->change_password($request, $employee);
 
@@ -237,6 +241,7 @@ class EmployeeController extends Controller
                 return $employee;
             });
             return view('dashboard.employees.report', [
+                'page' => 'employee_report',
                 'employees' => $employees
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -259,6 +264,7 @@ class EmployeeController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.employees.report', [
+                    'page' => 'employee_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'status' => $request->get('status'),

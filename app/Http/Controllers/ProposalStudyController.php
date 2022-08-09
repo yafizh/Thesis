@@ -312,32 +312,32 @@ class ProposalStudyController extends Controller
     public function report(Request $request)
     {
         if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
-            $proposals = Study::latest()->get()->map(function ($research) {
-                if ($research->proposal->status === "SUBMITTED")
+            $proposals = Study::latest()->get()->map(function ($study) {
+                if ($study->proposal->status === "SUBMITTED")
                     $status = "Pengajuan";
-                elseif ($research->proposal->status === "APPROVED")
+                elseif ($study->proposal->status === "APPROVED")
                     $status = "Disetujui";
-                elseif ($research->proposal->status === "REJECTED")
+                elseif ($study->proposal->status === "REJECTED")
                     $status = "Ditolak";
-                elseif ($research->proposal->status === "WAITING")
+                elseif ($study->proposal->status === "WAITING")
                     $status = "Menunggu Pendanaan";
 
-                $submitted_date = new Carbon($research->proposal->submitted_date);
+                $submitted_date = new Carbon($study->proposal->submitted_date);
 
                 $data = [
-                    "title" => $research->title,
-                    "head" => $research->members->filter(function ($member) {
+                    "title" => $study->research->title,
+                    "head" => $study->members->filter(function ($member) {
                         return $member->status === "HEAD";
                     })->first()->employee,
                     "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
                     "status" => $status,
                 ];
 
-                if ($research->proposal->approved_date) {
+                if ($study->proposal->approved_date) {
                     $approved_date = new Carbon();
 
                     $data = array_merge($data, [
-                        "reviewer" => $research->proposal->employee,
+                        "reviewer" => $study->proposal->employee,
                         "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
                     ]);
                 } else {
@@ -351,6 +351,7 @@ class ProposalStudyController extends Controller
             });
 
             return view('dashboard.study.proposal.report', [
+                'page' => 'proposal_study_report',
                 'proposals' => $proposals
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -371,38 +372,37 @@ class ProposalStudyController extends Controller
                 $status['DB'] = "";
             }
             if (!empty($request->get('from')) && !empty($request->get('to'))) {
-                $proposals =
-                    Study::whereBetween('submitted_date', [$request->get('from'), $request->get('to')])
-                    ->whereHas('proposal', function ($query) use ($status) {
-                        $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
-                    })
-                    ->get()
-                    ->map(function ($research) {
-                        if ($research->proposal->status === "SUBMITTED")
+                $from = $request->get('from');
+                $to = $request->get('to');
+                $proposals = Study::whereHas('proposal', function ($query) use ($from, $to, $status) {
+                    $query->whereBetween('submitted_date', [$from, $to])->where("status", 'LIKE', '%' . $status['DB'] . '%');
+                })->get()
+                    ->map(function ($study) {
+                        if ($study->proposal->status === "SUBMITTED")
                             $status = "Pengajuan";
-                        elseif ($research->proposal->status === "APPROVED")
+                        elseif ($study->proposal->status === "APPROVED")
                             $status = "Disetujui";
-                        elseif ($research->proposal->status === "REJECTED")
+                        elseif ($study->proposal->status === "REJECTED")
                             $status = "Ditolak";
-                        elseif ($research->proposal->status === "WAITING")
+                        elseif ($study->proposal->status === "WAITING")
                             $status = "Menunggu Pendanaan";
 
-                        $submitted_date = new Carbon($research->proposal->submitted_date);
+                        $submitted_date = new Carbon($study->proposal->submitted_date);
 
                         $data = [
-                            "title" => $research->title,
-                            "head" => $research->members->filter(function ($member) {
+                            "title" => $study->research->title,
+                            "head" => $study->members->filter(function ($member) {
                                 return $member->status === "HEAD";
                             })->first()->employee,
                             "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
                             "status" => $status,
                         ];
 
-                        if ($research->proposal->approved_date) {
+                        if ($study->proposal->approved_date) {
                             $approved_date = new Carbon();
 
                             $data = array_merge($data, [
-                                "reviewer" => $research->proposal->employee,
+                                "reviewer" => $study->proposal->employee,
                                 "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
                             ]);
                         } else {
@@ -418,32 +418,32 @@ class ProposalStudyController extends Controller
                 $proposals =
                     Study::whereHas('proposal', function ($query) use ($status) {
                         $query->where("status", 'LIKE', '%' . $status['DB'] . '%');
-                    })->latest()->get()->map(function ($research) {
-                        if ($research->proposal->status === "SUBMITTED")
+                    })->latest()->get()->map(function ($study) {
+                        if ($study->proposal->status === "SUBMITTED")
                             $status = "Pengajuan";
-                        elseif ($research->proposal->status === "APPROVED")
+                        elseif ($study->proposal->status === "APPROVED")
                             $status = "Disetujui";
-                        elseif ($research->proposal->status === "REJECTED")
+                        elseif ($study->proposal->status === "REJECTED")
                             $status = "Ditolak";
-                        elseif ($research->proposal->status === "WAITING")
+                        elseif ($study->proposal->status === "WAITING")
                             $status = "Menunggu Pendanaan";
 
-                        $submitted_date = new Carbon($research->proposal->submitted_date);
+                        $submitted_date = new Carbon($study->proposal->submitted_date);
 
                         $data = [
-                            "title" => $research->title,
-                            "head" => $research->members->filter(function ($member) {
+                            "title" => $study->research->title,
+                            "head" => $study->members->filter(function ($member) {
                                 return $member->status === "HEAD";
                             })->first()->employee,
                             "submitted_date" => ($submitted_date->day . " " . $submitted_date->getTranslatedMonthName() . " " . $submitted_date->year),
                             "status" => $status,
                         ];
 
-                        if ($research->proposal->approved_date) {
+                        if ($study->proposal->approved_date) {
                             $approved_date = new Carbon();
 
                             $data = array_merge($data, [
-                                "reviewer" => $research->proposal->employee,
+                                "reviewer" => $study->proposal->employee,
                                 "approved_duration" => ($approved_date->diffInDays(Carbon::now()) . " Hari"),
                             ]);
                         } else {
@@ -459,6 +459,7 @@ class ProposalStudyController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.study.proposal.report', [
+                    'page' => 'proposal_study_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'status' => $status['ID'],

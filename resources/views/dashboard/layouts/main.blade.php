@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Vali Admin - Free Bootstrap 4 Admin Template</title>
+    <title>BPTP KALSEL</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">

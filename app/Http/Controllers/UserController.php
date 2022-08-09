@@ -12,6 +12,7 @@ class UserController extends Controller
     public function index()
     {
         return view('dashboard.users.index', [
+            'page' => 'users',
             'users' => User::where('status', '!=', 'EMPLOYEE')->get(),
         ]);
     }
@@ -19,6 +20,7 @@ class UserController extends Controller
     public function create()
     {
         return view('dashboard.users.create', [
+            'page' => 'users',
             'users' => User::where('status', 'EMPLOYEE')->get()
         ]);
     }
@@ -47,6 +49,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return view('dashboard.users.edit', [
+            'page' => 'users',
             'user' => $user
         ]);
     }

@@ -167,6 +167,7 @@ class ResearchController extends Controller
             });
 
             return view('dashboard.research.report', [
+                'page' => 'research_report',
                 'researches' => $researches
             ]);
         } elseif ($request->get('submit') === 'filter' || $request->get('submit') === 'print') {
@@ -294,6 +295,7 @@ class ResearchController extends Controller
 
             if ($request->get('submit') === 'filter') {
                 return view('dashboard.research.report', [
+                    'page' => 'research_report',
                     'from' => $request->get('from') ?? '',
                     'to' => $request->get('to') ?? '',
                     'status' => $status['ID'],
@@ -329,6 +331,7 @@ class ResearchController extends Controller
         });
         if ($request->get('submit') === 'submit' || $request->get('submit') === 'reset') {
             return view('dashboard.research.report_member', [
+                'page' => 'research_member_report',
                 'members' => $members
             ]);
         } elseif ($request->get('submit') === 'print') {
