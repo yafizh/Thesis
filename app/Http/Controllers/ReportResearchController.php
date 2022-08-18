@@ -32,6 +32,7 @@ class ReportResearchController extends Controller
             $submitted_date = new Carbon($research->report->submitted_date);
             return (object)[
                 "research_id" => $research->id,
+                "title" => $research->title,
                 "head" => $research->members->filter(function ($member) {
                     return $member->status === "HEAD";
                 })->first()->employee,
@@ -72,7 +73,6 @@ class ReportResearchController extends Controller
             "status" => $report_research->report->status,
             "comments" => $report_research->report->comments
         ];
-
         if ($report_research->report->approved_date) {
             $approved_date = new Carbon($report_research->report->approved_date);
             $report["approved_date"] = $approved_date->day . " " . $approved_date->getTranslatedMonthName() . " " . $approved_date->year;

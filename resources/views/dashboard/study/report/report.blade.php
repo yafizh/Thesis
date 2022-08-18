@@ -117,7 +117,7 @@
                                 @foreach ($reports as $report)
                                     <tr>
                                         <td class="text-center align-middle">{{ $loop->iteration }}</td>
-                                        <td class="text-center align-middle">{{ $report->title }}</td>
+                                        <td class="align-middle">{{ $report->title }}</td>
                                         <td class="text-center align-middle">{{ $report->head->nip }}
                                         </td>
                                         <td>{{ $report->head->name }}</td>

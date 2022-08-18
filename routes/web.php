@@ -43,6 +43,7 @@ Route::post('/proposal-research/report', [ProposalResearchController::class, 're
 Route::put('proposal-research/approve/{proposal_research}', [ProposalResearchController::class, 'approve'])->middleware('auth');
 Route::resource('proposal-research', ProposalResearchController::class)->middleware('auth');
 
+Route::get('/research/permit/{research}', [ResearchController::class, 'permit'])->middleware('auth');
 Route::post('/research/report', [ResearchController::class, 'report'])->middleware('auth');
 Route::get('research/budget/{research}', [ResearchController::class, 'budget'])->middleware('auth');
 Route::resource('research', ResearchController::class)->only(['index', 'show'])->middleware('auth');
@@ -55,6 +56,7 @@ Route::post('/proposal-study/report', [ProposalStudyController::class, 'report']
 Route::put('proposal-study/approve/{proposal_study}', [ProposalStudyController::class, 'approve'])->middleware('auth');
 Route::resource('/proposal-study', ProposalStudyController::class)->middleware('auth');
 
+Route::get('/study/permit/{study}', [StudyController::class, 'permit'])->middleware('auth');
 Route::post('/study/report', [StudyController::class, 'report'])->middleware('auth');
 Route::get('study/budget/{study}', [StudyController::class, 'budget'])->middleware('auth');
 Route::resource('study', StudyController::class)->only(['index', 'show'])->middleware('auth');

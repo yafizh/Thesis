@@ -74,17 +74,19 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center td-fit">No</th>
-                                    <th class="text-center">Penanggung Jawab</th>
-                                    <th class="text-center">Tanggal Penyerahan</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center td-fit">Aksi</th>
+                                    <th class="text-center align-middle td-fit">No</th>
+                                    <th class="text-center align-middle">Judul Penelitian</th>
+                                    <th class="text-center align-middle">Penanggung Jawab</th>
+                                    <th class="text-center align-middle">Tanggal Penyerahan</th>
+                                    <th class="text-center align-middle">Status</th>
+                                    <th class="text-center align-middle td-fit">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
                                         <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
+                                        <td class="align-middle">{{ $report->title }}</td>
                                         <td class="text-center align-middle">{{ $report->head->name }}</td>
                                         <td class="text-center align-middle">{{ $report->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $report->status }}</td>

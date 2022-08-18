@@ -19,19 +19,21 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center td-fit">No</th>
-                                    <th class="text-center">Penananggung Jawab</th>
-                                    <th class="text-center">Tanggal Pengajuan</th>
-                                    <th class="text-center">Tanggal Disetujui</th>
-                                    <th class="text-center">Lama Kegiatan</th>
-                                    <th class="text-center">Tanggal Selesai</th>
-                                    <th class="text-center td-fit">Detail</th>
+                                    <th class="text-center align-middle td-fit">No</th>
+                                    <th class="text-center align-middle">Judul Penelitian</th>
+                                    <th class="text-center align-middle">Penananggung Jawab</th>
+                                    <th class="text-center align-middle">Tanggal Pengajuan</th>
+                                    <th class="text-center align-middle">Tanggal Disetujui</th>
+                                    <th class="text-center align-middle">Lama Kegiatan</th>
+                                    <th class="text-center align-middle">Tanggal Selesai</th>
+                                    <th class="text-center align-middle td-fit">Detail</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($researches as $research)
                                     <tr>
                                         <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
+                                        <td class="align-middle">{{ $research->title }}</td>
                                         <td class="text-center align-middle">{{ $research->head->name }}</td>
                                         <td class="text-center align-middle">{{ $research->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $research->approved_date }}</td>

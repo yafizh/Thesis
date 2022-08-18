@@ -54,13 +54,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Tanggal</label>
-                                        <input class="form-control" type="date"
-                                            value="{{ $guest->created_at->toDateString() }}" disabled>
+                                        <input class="form-control" type="text"
+                                            value="{{ $guest->visit_date }}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Jam</label>
-                                        <input class="form-control" type="time"
-                                            value="{{ $guest->created_at->toTimeString() }}" disabled>
+                                        <input class="form-control" type="text"
+                                            value="{{ $guest->visit_time }}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Instansi</label>

@@ -19,24 +19,28 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center td-fit">No</th>
-                                    <th class="text-center">Penananggung Jawab</th>
-                                    <th class="text-center">Tanggal Pengajuan</th>
-                                    <th class="text-center">Tanggal Disetujui</th>
-                                    <th class="text-center">Lama Kegiatan</th>
-                                    <th class="text-center">Tanggal Selesai</th>
-                                    <th class="text-center td-fit">Detail</th>
+                                    <th class="text-center align-middle td-fit">No</th>
+                                    <th class="text-center align-middle">Judul Penelitian yang Dikaji</th>
+                                    <th class="text-center align-middle">Penananggung Jawab</th>
+                                    <th class="text-center align-middle">Tanggal Pengajuan</th>
+                                    <th class="text-center align-middle">Tanggal Disetujui</th>
+                                    <th class="text-center align-middle">Lama Kegiatan</th>
+                                    <th class="text-center align-middle">Tanggal Selesai</th>
+                                    <th class="text-center align-middle td-fit">Detail</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($studies as $study)
                                     <tr>
                                         <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
+                                        <td class="align-middle">{{ $study->title }}</td>
                                         <td class="text-center align-middle">{{ $study->head->name }}</td>
                                         <td class="text-center align-middle">{{ $study->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $study->approved_date }}</td>
                                         <td class="text-center align-middle">{{ $study->study_duration }} Hari</td>
-                                        <td class="text-center align-middle">{{ $study->report_approved_date ? $study->report_approved_date : "Menunggu"  }}</td>
+                                        <td class="text-center align-middle">
+                                            {{ $study->report_approved_date ? $study->report_approved_date : 'Menunggu' }}
+                                        </td>
                                         <td class="td-fit">
                                             <a href="/{{ explode('.', Route::currentRouteName())[0] }}/{{ $study->id }}"
                                                 class="btn btn-info btn-sm"><i class="m-0 fa fa-eye"

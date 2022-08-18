@@ -28,20 +28,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Judul Penelitian yang Dikaji</label>
-                                <input class="form-control" type="text" value="{{ $study->title }}" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Status Penelitian</label>
-                                <br>
-                                @if ($study->status === 'WAITING')
-                                    <span class="badge badge-warning">Menunggu Anggaran</span>
-                                @elseif ($study->status === 'APPROVED')
-                                    <span class="badge badge-success">Selesai</span>
-                                @elseif ($study->status === 'SUBMITTED')
-                                    <span class="badge badge-warning">Menunggu Peninjauan Laporan Akhir</span>
-                                @elseif ($study->status === 'ONGOING')
-                                    <span class="badge badge-info">Sedang Berjalan</span>
-                                @endif
+                                <textarea class="form-control" rows="5" disabled>{{ $study->title }}</textarea>
+                                {{-- <input class="form-control" type="text" value="{{ $study->title }}" disabled> --}}
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Anggaran</label>
@@ -72,6 +60,31 @@
                                         <li>{{ $employee->name }} ({{ $employee->nip }})</li>
                                     @endforeach
                                 </ol>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Status Penelitian</label>
+                                <br>
+                                @if ($study->status === 'WAITING')
+                                    <span class="badge badge-success">Proposal Telah Ditinjau</span>
+                                    <span class="badge badge-info">Sedang Berjalan</span>
+                                    {{-- <span class="badge badge-warning">Menunggu Anggaran</span> --}}
+                                @elseif ($study->status === 'APPROVED')
+                                    <span class="badge badge-success">Proposal Telah Ditinjau</span>
+                                    <span class="badge badge-success">Laporan Akhir Telah Ditinjau</span>
+                                    <span class="badge badge-success">Pengkajian Selesai</span>
+                                @elseif ($study->status === 'SUBMITTED')
+                                    <span class="badge badge-success">Proposal Telah Ditinjau</span>
+                                    <span class="badge badge-warning">Menunggu Peninjauan Laporan Akhir</span>
+                                @elseif ($study->status === 'ONGOING')
+                                    <span class="badge badge-success">Proposal Telah Ditinjau</span>
+                                    <span class="badge badge-info">Pengkajian Sedang Berjalan</span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">File Surat Izin Penelitian</label>
+                                <br>
+                                <a href="/{{ explode('.', Route::currentRouteName())[0] }}/permit/{{ $study->id }}"
+                                    target="_blank">PDF</a>
                             </div>
                         </div>
                         <div class="col-4">
@@ -121,13 +134,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Tanggal Pengajuan</label>
-                                    <input type="text" class="form-control" value="{{ $study->report_submitted_date }}"
-                                        disabled>
+                                    <input type="text" class="form-control"
+                                        value="{{ $study->report_submitted_date }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Waktu Pengajuan</label>
-                                    <input type="text" class="form-control" value="{{ $study->report_submitted_time }}"
-                                        disabled>
+                                    <input type="text" class="form-control"
+                                        value="{{ $study->report_submitted_time }}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Tanggal Disetujui</label>
@@ -161,7 +174,8 @@
                     @endif
                     @can('external')
                         @if ($study->status === 'WAITING')
-                            <a class="btn btn-warning" href="/study/budget/{{ $study->id }}" onclick="return confirm('Yakin ingin mengirimkan pemberitahuan anggaran?')">
+                            <a class="btn btn-warning" href="/study/budget/{{ $study->id }}"
+                                onclick="return confirm('Yakin ingin mengirimkan pemberitahuan anggaran?')">
                                 <i class="fa fa-share-square"></i>
                                 Pemberitahuan Anggaran
                             </a>

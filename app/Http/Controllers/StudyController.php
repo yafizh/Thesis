@@ -37,6 +37,7 @@ class StudyController extends Controller
             }
             return (object)[
                 "id" => $study->id,
+                "title" => $study->research->title,
                 "head" => $study->members->filter(function ($member) {
                     return $member->status === "HEAD";
                 })->first()->employee,
@@ -341,5 +342,38 @@ class StudyController extends Controller
                 'members' => $members
             ]);
         }
+    }
+
+    public function permit(Study $study)
+    {
+        if (auth()->user()->status === "ADMIN" || auth()->user()->employee->status === "EXTERNAL")
+            $members = $study->members;
+        else if (auth()->user()->employee->status === "INTERNAL")
+            $members = $study->members->filter(function ($member) {
+                return $member->employee_id === auth()->user()->employee->id;
+            });
+
+        $employees = $members->map(function ($member) {
+            $employee = $member->employee;
+            if ($member->status === 'HEAD')
+                $employee['member_status'] = 'Penanggung Jawab';
+            elseif ($member->status === 'RESEARCHER')
+                $employee['member_status'] = 'Peneliti';
+            elseif ($member->status === 'EXTENSIONISTS')
+                $employee['member_status'] = 'Penyuluh';
+
+            return $employee;
+        });
+
+        $roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "XI", "X", "XI", "XII"];
+        $approved_date = new Carbon($study->proposal->approved_date);
+        return view('dashboard.study.permit', [
+            'title' => $study->research->title,
+            'month' => $roman[$approved_date->month + 1],
+            'year' => $approved_date->year,
+            'number' => $study->proposal->id,
+            'employees' => $employees,
+            'today' => new Carbon()
+        ]);
     }
 }

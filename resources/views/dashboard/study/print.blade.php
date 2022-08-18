@@ -29,40 +29,40 @@
         <table class="table table-striped table-bordered">
             <thead class="text-center">
                 <tr>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">No</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Judul</th>
-                    <th colspan="2" class="text-center">Penanggung Jawab</th>
-                    <th colspan="2" class="text-center">Peninjau</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Tanggal Mulai Pengkajian
+                    <th rowspan="2" class="text-center align-middle">No</th>
+                    <th rowspan="2" class="text-center align-middle">Judul Penelitian yang Dikaji</th>
+                    <th colspan="2" class="text-center align-middle">Penanggung Jawab</th>
+                    <th colspan="2" class="text-center align-middle">Peninjau</th>
+                    <th rowspan="2" class="text-center align-middle">Tanggal Mulai Pengkajian
                     </th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Status</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Lama Pengkajian</th>
+                    <th rowspan="2" class="text-center align-middle">Status</th>
+                    <th rowspan="2" class="text-center align-middle">Lama Pengkajian</th>
                 </tr>
                 <tr>
-                    <th class="text-center">NIP</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">NIP</th>
-                    <th class="text-center">Nama</th>
+                    <th class="text-center align-middle">NIP</th>
+                    <th class="text-center align-middle">Nama</th>
+                    <th class="text-center align-middle">NIP</th>
+                    <th class="text-center align-middle">Nama</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($studies as $study)
                     <tr>
-                        <td style="vertical-align: middle;" class="text-center">{{ $loop->iteration }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $study->title }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $study->head->nip }}</td>
-                        <td style="vertical-align: middle;">{{ $study->head->name }}</td>
+                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                        <td class="align-middle">{{ $study->title }}</td>
+                        <td class="text-center align-middle">{{ $study->head->nip }}</td>
+                        <td class="align-middle">{{ $study->head->name }}</td>
                         @if (isset($study->reviewer->nip) && isset($study->reviewer->name))
-                            <td style="vertical-align: middle;" class="text-center">
+                            <td class="text-center align-middle">
                                 {{ $study->reviewer->nip }}</td>
-                            <td style="vertical-align: middle;">{{ $study->reviewer->name }}</td>
+                            <td class="align-middle">{{ $study->reviewer->name }}</td>
                         @else
-                            <td colspan="2" style="vertical-align: middle;" class="text-center">
+                            <td colspan="2" class="text-center align-middle">
                                 {{ $study->reviewer }}</td>
                         @endif
-                        <td style="vertical-align: middle;" class="text-center">{{ $study->start_date }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $study->status }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $study->study_duration }}</td>
+                        <td class="text-center align-middle">{{ $study->start_date }}</td>
+                        <td class="text-center align-middle">{{ $study->status }}</td>
+                        <td class="text-center align-middle">{{ $study->study_duration }}</td>
                     </tr>
                 @endforeach
             </tbody>

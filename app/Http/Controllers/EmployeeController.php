@@ -13,9 +13,15 @@ class EmployeeController extends Controller
 {
     public function index()
     {
+        $employees = Employee::orderBy("name")->get()->map(function ($employee) {
+            $start_date = new Carbon($employee->start_date);
+            $employee->start_date = $start_date->day . " " . $start_date->getTranslatedMonthName() . " " . $start_date->year;
+            return $employee;
+        });
+        // dd($employees);
         return view('dashboard.employees.index', [
             'page' => 'employees',
-            'employees' => Employee::orderBy("name")->get()
+            'employees' => $employees
         ]);
     }
 
@@ -86,7 +92,9 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         $birth = new Carbon($employee->birth);
+        $start_date = new Carbon($employee->start_date);
         $employee->birth = ($birth->day . " " . $birth->getTranslatedMonthName() . " " . $birth->year);
+        $employee->start_date = ($start_date->day . " " . $start_date->getTranslatedMonthName() . " " . $start_date->year);
         return view('dashboard.employees.show', [
             'page' => 'employees',
             'employee' => $employee
@@ -160,7 +168,10 @@ class EmployeeController extends Controller
         Employee::where('id', $employee->id)
             ->update($validatedData);
 
-        return redirect('/employees')->with('updated', $employee->id);
+        if (auth()->user()->status === "ADMIN")
+            return redirect('/employees')->with('updated', $employee->id);
+        else
+            return redirect('/employees/' . $employee->id);
     }
 
     public function destroy(Employee $employee)
@@ -237,7 +248,17 @@ class EmployeeController extends Controller
                 $start_date = new Carbon($employee->start_date);
 
                 $employee->start_date = ($start_date->day . " " . $start_date->getTranslatedMonthName() . " " . $start_date->year);
-                $employee->work_duration = $start_date->diffInDays(Carbon::now()) . " Hari";
+
+                $interval = "";
+                if ($start_date->diff(Carbon::now())->format('%y'))
+                    $interval .= $start_date->diff(Carbon::now())->format('%y') . " Tahun";
+                if ($start_date->diff(Carbon::now())->format('%m'))
+                    $interval .= " " . $start_date->diff(Carbon::now())->format('%m') . " Bulan";
+                if ($start_date->diff(Carbon::now())->format('%d'))
+                    $interval .= " " . $start_date->diff(Carbon::now())->format('%d') . " Hari";
+                if (!$interval) $interval = "Baru Hari ini";
+
+                $employee->work_duration = $interval;
                 return $employee;
             });
             return view('dashboard.employees.report', [

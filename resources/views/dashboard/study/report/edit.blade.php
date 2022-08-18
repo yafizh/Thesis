@@ -32,7 +32,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Judul Penelitian yang Dikaji</label>
-                                    <input class="form-control" type="text" value="{{ $report->title }}" disabled>
+                                    <textarea class="form-control" disabled>{{ $report->title }}</textarea>
+                                    {{-- <input class="form-control" type="text" value="{{ $report->title }}" disabled> --}}
                                 </div>
                                 <h6>Anggaran</h6>
                                 <div class="form-group">

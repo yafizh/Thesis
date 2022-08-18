@@ -223,7 +223,7 @@
                             <button type="submit" name="submit" value="submit"
                                 class="btn btn-link w-100 treeview-item {{ $page == 'study_report' ? 'active' : '' }}">
                                 <i class="icon fa fa-circle-o"></i>
-                                Penelitian
+                                Pengkajian
                             </button>
                         </form>
                     </li>

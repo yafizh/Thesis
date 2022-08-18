@@ -32,11 +32,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Judul Penelitian yang Dikaji</label>
-                                    <select class="form-control" name="research_id" id="research_id" required>
-                                        <option value="" selected disabled>Pilih Judul Penelitian</option>
-                                        @foreach ($researches as $research)
-                                            <option value="{{ $research->id }}">{{ $research->title }}</option>
-                                        @endforeach
+                                    <select name="research_id" id="research_id" placeholder="Pilih Judul Penelitian"
+                                        required>
                                     </select>
                                 </div>
                                 <h6>Anggaran</h6>
@@ -64,13 +61,15 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">Keperluan</label>
-                                            <input type="text" name="name[]" class="form-control" oninput="addField()" autocomplete="off">
+                                            <input type="text" name="name[]" class="form-control" oninput="addField()"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label class="control-label">Anggaran</label>
-                                            <input type="text" name="cost[]" class="form-control" oninput="addField()" autocomplete="off">
+                                            <input type="text" name="cost[]" class="form-control" oninput="addField()"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -155,6 +154,36 @@
             iframe.src = URL.createObjectURL(input.files[0]);
             input.nextElementSibling.innerHTML = input.files[0].name;
         }
+
+        let researches = [];
+        @foreach ($researches as $research)
+            researches.push({
+                id: {{ $research->id }},
+                name: '{{ $research->title }}',
+                // nip: '{{ $research->nip }}',
+            });
+        @endforeach
+
+        const research = new TomSelect("#research_id", {
+            valueField: "id",
+            searchField: "name",
+            options: researches,
+            render: {
+                option: function(data, escape) {
+                    return (
+                        `<div>
+                        <span class='name d-block'>${escape(data.name)}</span>
+                        </div>`
+                    );
+                },
+                item: function(data, escape) {
+                    return (
+                        `<div name='${escape(data.nip)}'>${escape(data.name)}</div>`
+                    );
+                },
+            },
+        });
+        research.setValue("{{ old('research_id') }}");
 
         // Dibikin 2 walaupun isinya sama, karena error kalau hanya satu
         let research_employees = [];

@@ -79,19 +79,19 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th class="text-center td-fit">No</th>
-                                    <th class="text-center">Judul Penelitian yang Dikaji</th>
-                                    <th class="text-center">Penananggung Jawab</th>
-                                    <th class="text-center">Tanggal Pengajuan</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center td-fit">Aksi</th>
+                                    <th class="text-center align-middle td-fit">No</th>
+                                    <th class="text-center align-middle">Judul Penelitian yang Dikaji</th>
+                                    <th class="text-center align-middle">Penananggung Jawab</th>
+                                    <th class="text-center align-middle">Tanggal Pengajuan</th>
+                                    <th class="text-center align-middle">Status</th>
+                                    <th class="text-center align-middle td-fit">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($proposals as $proposal)
                                     <tr>
                                         <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
-                                        <td class="text-center align-middle">{{ $proposal->title }}</td>
+                                        <td class="align-middle">{{ $proposal->title }}</td>
                                         <td class="text-center align-middle">{{ $proposal->head->name }}</td>
                                         <td class="text-center align-middle">{{ $proposal->submitted_date }}</td>
                                         <td class="text-center align-middle">{{ $proposal->status }}</td>

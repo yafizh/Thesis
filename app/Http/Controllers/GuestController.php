@@ -52,6 +52,8 @@ class GuestController extends Controller
 
     public function show(Guest $guest)
     {
+        $guest->visit_date = ($guest->created_at->day . " " . $guest->created_at->getTranslatedMonthName() . " " . $guest->created_at->year);
+        $guest->visit_time = (($guest->created_at->hour < 10 ? ("0" . $guest->created_at->hour) : $guest->created_at->hour) . ":" . ($guest->created_at->minute < 10 ? ("0" . $guest->created_at->minute) : $guest->created_at->minute));
         return view('dashboard.guests.show', [
             "page" => "guests",
             "guest" => $guest,

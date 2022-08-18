@@ -29,41 +29,41 @@
         <table class="table table-striped table-bordered">
             <thead class="text-center">
                 <tr>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">No</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Judul</th>
-                    <th colspan="2" class="text-center">Penanggung Jawab</th>
-                    <th colspan="2" class="text-center">Peninjau</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Tanggal Pengajuan
+                    <th rowspan="2" class="text-center align-middle">No</th>
+                    <th rowspan="2" class="text-center align-middle">Judul Penelitian</th>
+                    <th colspan="2" class="text-center align-middle">Penanggung Jawab</th>
+                    <th colspan="2" class="text-center align-middle">Peninjau</th>
+                    <th rowspan="2" class="text-center align-middle">Tanggal Pengajuan
                     </th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Status</th>
-                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Lama Peninjauan
+                    <th rowspan="2" class="text-center align-middle">Status</th>
+                    <th rowspan="2" class="text-center align-middle">Lama Peninjauan
                     </th>
                 </tr>
                 <tr>
-                    <th class="text-center">NIP</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">NIP</th>
-                    <th class="text-center">Nama</th>
+                    <th class="text-center align-middle">NIP</th>
+                    <th class="text-center align-middle">Nama</th>
+                    <th class="text-center align-middle">NIP</th>
+                    <th class="text-center align-middle">Nama</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($proposals as $proposal)
                     <tr>
-                        <td style="vertical-align: middle;" class="text-center">{{ $loop->iteration }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->title }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->head->nip }}</td>
-                        <td style="vertical-align: middle;">{{ $proposal->head->name }}</td>
+                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
+                        <td class="align-middle">{{ $proposal->title }}</td>
+                        <td class="text-center align-middle">{{ $proposal->head->nip }}</td>
+                        <td class="align-middle">{{ $proposal->head->name }}</td>
                         @if (isset($proposal->reviewer->nip) && isset($proposal->reviewer->name))
-                            <td style="vertical-align: middle;" class="text-center">
+                            <td class="text-center align-middle">
                                 {{ $proposal->reviewer->nip }}</td>
-                            <td style="vertical-align: middle;">{{ $proposal->reviewer->name }}</td>
+                            <td class="align-middle">{{ $proposal->reviewer->name }}</td>
                         @else
-                            <td colspan="2" style="vertical-align: middle;" class="text-center">
+                            <td colspan="2" class="text-center align-middle">
                                 {{ $proposal->reviewer }}</td>
                         @endif
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->submitted_date }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->status }}</td>
-                        <td style="vertical-align: middle;" class="text-center">{{ $proposal->approved_duration }}</td>
+                        <td class="text-center align-middle">{{ $proposal->submitted_date }}</td>
+                        <td class="text-center align-middle">{{ $proposal->status }}</td>
+                        <td class="text-center align-middle">{{ $proposal->approved_duration }}</td>
                     </tr>
                 @endforeach
             </tbody>

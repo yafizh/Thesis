@@ -45,6 +45,7 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
+                                    <th class="text-center td-fit">No</th>
                                     <th class="text-center">NIP</th>
                                     <th class="text-center">Nama</th>
                                     <th class="text-center">Username</th>
@@ -55,6 +56,7 @@
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
+                                        <td class="text-center align-middle td-fit">{{ $loop->iteration }}</td>
                                         <td class="text-center align-middle">{{ $user->employee->nip }}</td>
                                         <td class="align-middle">{{ $user->name }}</td>
                                         <td class="text-center align-middle">{{ $user->username }}</td>

@@ -83,7 +83,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Terhitung Mulai Tanggal</label>
                                     <input class="form-control" type="date" name="start_date"
-                                        value="{{ old('birth', Date('Y-m-d')) }}" required>
+                                        value="{{ old('start_date', Date('Y-m-d')) }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Jenis Kelamin</label>

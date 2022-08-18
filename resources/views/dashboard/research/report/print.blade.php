@@ -30,7 +30,7 @@
             <thead class="text-center">
                 <tr>
                     <th rowspan="2" class="text-center align-middle">No</th>
-                    <th rowspan="2" class="text-center align-middle">Judul</th>
+                    <th rowspan="2" class="text-center align-middle">Judul Penelitian</th>
                     <th colspan="2" class="text-center">Penanggung Jawab</th>
                     <th colspan="2" class="text-center">Peninjau</th>
                     <th rowspan="2" class="text-center align-middle">Tanggal Pengajuan
@@ -50,7 +50,7 @@
                 @foreach ($reports as $report)
                     <tr>
                         <td class="text-center align-middle">{{ $loop->iteration }}</td>
-                        <td class="text-center align-middle">{{ $report->title }}</td>
+                        <td class="align-middle">{{ $report->title }}</td>
                         <td class="text-center align-middle">{{ $report->head->nip }}</td>
                         <td class="align-middle">{{ $report->head->name }}</td>
                         @if (isset($report->reviewer->nip) && isset($report->reviewer->name))

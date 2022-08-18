@@ -205,9 +205,13 @@
                         class="btn btn-warning">
                         <i class="fa fa-fw fa-lg fa-pencil-square-o"></i> Edit Profil
                     </a>
-                    <button class="btn btn-danger" type="button">
-                        <i class="fa fa-fw fa-lg fa-trash-o"></i> Hapus Akun
-                    </button>
+                    <form action="/employees/{{ $employee->id }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="return confirm('Yakin?')" class="btn btn-danger" type="submit">
+                            <i class="fa fa-fw fa-lg fa-trash-o"></i> Hapus Akun
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

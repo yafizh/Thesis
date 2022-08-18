@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId("employee_id");
             $table->foreignId("research_id");
             $table->string('status');
-            $table->string('status_budget')->nullable();
             $table->timestamps();
         });
     }

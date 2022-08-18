@@ -53,6 +53,7 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
+                                    <th class="text-center">No</th>
                                     <th class="text-center">NIP</th>
                                     <th class="text-center">Nama</th>
                                     <th class="text-center">Jabatan</th>
@@ -65,6 +66,7 @@
                             <tbody>
                                 @foreach ($employees as $employee)
                                     <tr>
+                                        <td class="text-center align-middle">{{ $loop->iteration }}</td>
                                         <td class="text-center align-middle">{{ $employee->nip }}</td>
                                         <td class="align-middle">{{ $employee->name }}</td>
                                         <td class="align-middle">{{ $employee->position }}</td>
@@ -72,20 +74,10 @@
                                         <td class="text-center align-middle">
                                             {{ $employee->status === 'INTERNAL' ? 'Internal' : 'Eksternal' }}
                                         </td>
-                                        <td class="text-center align-middle">
-                                            {{ date_format(date_create($employee->start_date), 'd-m-Y') }}</td>
+                                        <td class="text-center align-middle">{{ $employee->start_date }}</td>
                                         <td class="td-fit">
                                             <a href="/employees/{{ $employee->id }}" class="btn btn-info btn-sm"><i
                                                     class="m-0 fa fa-eye" aria-hidden="true"></i></a>
-                                            <a href="/employees/{{ $employee->id }}/edit" class="btn btn-warning btn-sm"><i
-                                                    class="m-0 fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <form action="/employees/{{ $employee->id }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button onclick="return confirm('Yakin?')" type="submit"
-                                                    class="btn btn-danger btn-sm"><i class="m-0 fa fa-trash-o"
-                                                        aria-hidden="true"></i></button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

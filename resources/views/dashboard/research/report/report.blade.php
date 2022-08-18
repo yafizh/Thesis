@@ -97,7 +97,7 @@
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="text-center align-middle">No</th>
-                                    <th rowspan="2" class="text-center align-middle">Judul</th>
+                                    <th rowspan="2" class="text-center align-middle">Judul Penelitian</th>
                                     <th colspan="2" class="text-center">Penanggung Jawab</th>
                                     <th colspan="2" class="text-center">Peninjau</th>
                                     <th rowspan="2" class="text-center align-middle">Tanggal Pengajuan
@@ -107,17 +107,17 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="text-center">NIP</th>
-                                    <th class="text-center">Nama</th>
-                                    <th class="text-center">NIP</th>
-                                    <th class="text-center">Nama</th>
+                                    <th class="text-center align-middle">NIP</th>
+                                    <th class="text-center align-middle">Nama</th>
+                                    <th class="text-center align-middle">NIP</th>
+                                    <th class="text-center align-middle">Nama</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
                                         <td class="text-center align-middle">{{ $loop->iteration }}</td>
-                                        <td class="text-center align-middle">{{ $report->title }}</td>
+                                        <td class="align-middle">{{ $report->title }}</td>
                                         <td class="text-center align-middle">{{ $report->head->nip }}
                                         </td>
                                         <td>{{ $report->head->name }}</td>

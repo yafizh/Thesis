@@ -32,6 +32,7 @@ class ReportStudyController extends Controller
             $submitted_date = new Carbon($study->report->submitted_date);
             return (object)[
                 "study_id" => $study->id,
+                "title" => $study->research->title,
                 "head" => $study->members->filter(function ($member) {
                     return $member->status === "HEAD";
                 })->first()->employee,

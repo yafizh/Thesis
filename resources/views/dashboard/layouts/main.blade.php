@@ -40,7 +40,8 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $('#sampleTable').DataTable({
-            "aaSorting": []
+            "aaSorting": [],
+            "ordering": false
         });
     </script>
     <!-- Page specific javascripts-->

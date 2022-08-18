@@ -4,7 +4,7 @@
         aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
-        @can('employee')
+        {{-- @can('employee')
             @can('internal')
                 <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"
                         aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
@@ -27,7 +27,7 @@
                     </ul>
                 </li>
             @endcan
-        @endcan
+        @endcan --}}
         <!-- User Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown"
                 aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>

@@ -24,7 +24,7 @@
                                         <div class="form-group">
                                             <label class="control-label">NIK</label>
                                             <input class="form-control" type="text" name="nik"
-                                                placeholder="Masukkan NIP" autofocus autocomplete="off"
+                                                placeholder="Masukkan NIK" autofocus autocomplete="off"
                                                 value="{{ old('nik') }}" required>
                                         </div>
                                         <div class="form-group">
